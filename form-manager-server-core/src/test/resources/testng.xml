@@ -3,11 +3,11 @@
 	<test name="FormManagerServer" enabled="true" preserve-order="true">
 		<groups>
 			<run>
-				<!-- <include name="" /> -->
+				<include name="authentication" />
 			</run>
 		</groups>
 		<classes>
-			<!-- <class name="com.biit." /> -->
+			<class name="com.biit.form.manager.security.AuthenticationServiceTest" />
 		</classes>
 	</test>
 </suite>

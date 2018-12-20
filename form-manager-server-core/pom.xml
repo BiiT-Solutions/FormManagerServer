@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>form-manager-server-core</artifactId>
 	<name>Form Manager Server (Core)</name>
@@ -10,13 +11,13 @@
 		<version>0.0.3-SNAPSHOT</version>
 	</parent>
 
-	<dependencies>	
+	<dependencies>
 		<dependency>
 			<groupId>com.biit</groupId>
 			<artifactId>form-manager-server-persistence</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<!-- File access and logger -->
 		<dependency>
 			<groupId>com.biit</groupId>
@@ -27,9 +28,9 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
-		
+
 		<!-- Security -->
-				<dependency>
+		<dependency>
 			<groupId>com.biit</groupId>
 			<artifactId>user-manager-database</artifactId>
 			<version>${user-manager-database.version}</version>
@@ -40,6 +41,11 @@
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>${org.testng.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
