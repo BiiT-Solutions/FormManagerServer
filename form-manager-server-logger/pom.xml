@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>form-manager-server-logger</artifactId>
+	<name>Form Manager Server (Logger)</name>
+
+	<parent>
+		<groupId>com.biit</groupId>
+		<artifactId>form-manager-server</artifactId>
+		<version>0.0.3-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>		
+		<!-- File access and logger -->
+		<dependency>
+			<groupId>com.biit</groupId>
+			<artifactId>common-utils</artifactId>
+			<version>${biit-common-utils.version}</version>
+		</dependency>
+	</dependencies>
+
+</project>

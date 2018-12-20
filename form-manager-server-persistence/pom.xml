@@ -11,6 +11,12 @@
 	</parent>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.biit</groupId>
+			<artifactId>form-manager-server-logger</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	
 		<!-- File access and logger -->
 		<dependency>
 			<groupId>com.biit</groupId>
