@@ -1,0 +1,44 @@
+package com.biit.form.manager.rest;
+
+import io.swagger.annotations.ApiOperation;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.biit.form.manager.logger.FormManagerLogger;
+import com.biit.form.manager.rest.exceptions.InternalServerException;
+import com.biit.form.manager.rest.exceptions.InvalidUserException;
+import com.biit.usermanager.security.IAuthenticationService;
+import com.biit.usermanager.security.exceptions.AuthenticationRequired;
+import com.biit.usermanager.security.exceptions.InvalidCredentialsException;
+import com.biit.usermanager.security.exceptions.UserDoesNotExistException;
+import com.biit.usermanager.security.exceptions.UserManagementException;
+
+/**
+ * Rest services for checking authorizations, permissions and logins.
+ */
+@RestController
+public class SecurityServices {
+
+	@Autowired
+	private IAuthenticationService<Long, Long> authenticationService;
+
+	@ApiOperation(value = "Basic method to check if the server is online.", notes = "The password is send in plain text. It is recommended the use of HTTPS for security reasons.")
+	@RequestMapping(value = "/security/user/{userName}/password/{password}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public void authorization(String userName, String password) throws InvalidUserException, InternalServerException {
+		try {
+			authenticationService.authenticate(userName, password);
+		} catch (UserManagementException | AuthenticationRequired e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			throw new InternalServerException(e);
+		} catch (InvalidCredentialsException | UserDoesNotExistException e) {
+			FormManagerLogger.warning(this.getClass().getName(), "Invalid user '" + userName + "' with password '" + password + "'.");
+			throw new InvalidUserException("Invalid user '" + userName + "' or password incorrect.", e);
+		}
+	}
+}

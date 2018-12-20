@@ -16,6 +16,7 @@
 			<artifactId>form-manager-server-persistence</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
 		<!-- File access and logger -->
 		<dependency>
 			<groupId>com.biit</groupId>
@@ -25,6 +26,13 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
+		</dependency>
+		
+		<!-- Security -->
+				<dependency>
+			<groupId>com.biit</groupId>
+			<artifactId>user-manager-database</artifactId>
+			<version>${user-manager-database.version}</version>
 		</dependency>
 
 		<!-- Testing -->
