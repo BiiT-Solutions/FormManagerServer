@@ -17,6 +17,10 @@
 			<artifactId>form-manager-server-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
 
 		<!-- File access and logger -->
 		<dependency>
