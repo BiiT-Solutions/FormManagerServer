@@ -74,7 +74,7 @@
 	</properties>
 
 	<build>
-		<finalName>formmanager-server</finalName>
+		<finalName>form-manager-server</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
