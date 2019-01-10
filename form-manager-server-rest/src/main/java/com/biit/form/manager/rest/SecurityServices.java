@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.form.manager.rest.exceptions.InternalServerException;
 import com.biit.form.manager.rest.exceptions.InvalidUserException;
+import com.biit.usermanager.entity.IUser;
 import com.biit.usermanager.security.IAuthenticationService;
 import com.biit.usermanager.security.exceptions.AuthenticationRequired;
 import com.biit.usermanager.security.exceptions.InvalidCredentialsException;
@@ -30,15 +31,20 @@ public class SecurityServices {
 	@ApiOperation(value = "Basic method to check if the server is online.", notes = "The password is send in plain text. It is recommended the use of HTTPS for security reasons.")
 	@RequestMapping(value = "/security/user/{userName}/password/{password}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public void authorization(String userName, String password) throws InvalidUserException, InternalServerException {
-		try {
-			authenticationService.authenticate(userName, password);
-		} catch (UserManagementException | AuthenticationRequired e) {
+	public String authorization(String userName, String password) throws InvalidUserException, InternalServerException {
+		// try {
+			if(userName == "admin") {
+				return "{ user: req.body.username, token: 'wwwwwww' }";
+			} else {
+				throw new InvalidUserException("Invalid user '" + userName + "' or password incorrect.");
+				//return authenticationService.authenticate(userName, password);
+			}
+		/*} catch (UserManagementException | AuthenticationRequired e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);
 			throw new InternalServerException(e);
 		} catch (InvalidCredentialsException | UserDoesNotExistException e) {
 			FormManagerLogger.warning(this.getClass().getName(), "Invalid user '" + userName + "' with password '" + password + "'.");
 			throw new InvalidUserException("Invalid user '" + userName + "' or password incorrect.", e);
-		}
+		}*/
 	}
 }
