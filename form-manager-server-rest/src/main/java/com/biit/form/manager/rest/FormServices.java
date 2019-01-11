@@ -1,13 +1,22 @@
 package com.biit.form.manager.rest;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.biit.form.configuration.FormManagerConfigurationReader;
 import com.biit.form.manager.logger.FormManagerLogger;
@@ -44,4 +53,32 @@ public class FormServices {
 		FormManagerLogger.info(this.getClass().getName(), "Post form");
 		return formResult;
 	}
+	
+	@PostMapping("/upload") // //new annotation since 4.3
+    public String singleFileUpload(@RequestParam("file") MultipartFile file,
+                                   RedirectAttributes redirectAttributes) {
+
+        if (file.isEmpty()) {
+            // redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+            return "redirect:uploadStatus";
+        }
+
+        try {
+
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            FormManagerLogger.info(this.getClass().getName(), "File "+ file.getOriginalFilename());
+            // FormManagerLogger.info(this.getClass().getName(), "Files recieved"+ bytes);
+            // Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            // Files.write(path, bytes);
+
+           // redirectAttributes.addFlashAttribute("message",
+             //       "You successfully uploaded '" + file.getOriginalFilename() + "'");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/uploadStatus";
+    }
 }
