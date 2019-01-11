@@ -57,11 +57,12 @@ public class SecurityServices {
 	@ApiOperation(value = "Basic method to check if the server is online.", notes = "")
 	@RequestMapping(value = "/security/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public String authorization2(
-			@ApiParam(value = "", required = true) @RequestBody(required = true) LoginForm loginForm) throws InvalidUserException
-{
+	public String login(
+			@ApiParam(value = "", required = true) @RequestBody(required = true) LoginForm loginForm)
+			throws InvalidUserException {
+		FormManagerLogger.info(this.getClass().getName(), "User " + loginForm.getUsername() + " succesfully logged in");
 		if (loginForm.getUsername().equals("admin")) {
-			System.out.println("User to log in " + loginForm.getUsername());
+			FormManagerLogger.info(this.getClass().getName(), "User " + loginForm.getUsername() + " succesfully logged in");
 			return "{ \"user\": \"admin\", \"token\": \"wwwwwww\" }";
 		} else {
 			throw new InvalidUserException("Invalid user '" + loginForm.getUsername() + "' or password incorrect.");
