@@ -36,7 +36,6 @@ public class FormServices {
 	public String getForm(@PathVariable("formId") String formId)
 			throws UnprocessableEntityException, EmptyResultException {
 
-		// TODO Move to a config file
 		String target = FormManagerConfigurationReader.getInstance().getMachineDomain();
 		target += "/formrunner";
 		String path = "/forms/" + formId;
@@ -76,6 +75,7 @@ public class FormServices {
              //       "You successfully uploaded '" + file.getOriginalFilename() + "'");
 
         } catch (IOException e) {
+        	FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
             e.printStackTrace();
         }
 
