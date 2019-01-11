@@ -61,7 +61,7 @@ public class SecurityServices {
 			@ApiParam(value = "", required = true) @RequestBody(required = true) LoginForm loginForm) throws InvalidUserException
 {
 		if (loginForm.getUsername().equals("admin")) {
-			// System.out.println(loginForm.getUsername());
+			System.out.println("User to log in " + loginForm.getUsername());
 			return "{ \"user\": \"admin\", \"token\": \"wwwwwww\" }";
 		} else {
 			throw new InvalidUserException("Invalid user '" + loginForm.getUsername() + "' or password incorrect.");
