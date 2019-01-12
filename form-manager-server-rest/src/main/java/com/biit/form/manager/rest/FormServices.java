@@ -1,9 +1,9 @@
 package com.biit.form.manager.rest;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,18 +24,13 @@ import com.biit.rest.client.RestGenericClient;
 import com.biit.rest.exceptions.EmptyResultException;
 import com.biit.rest.exceptions.UnprocessableEntityException;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-
 @RestController
 public class FormServices {
 
 	@ApiOperation(value = "Basic method to get the answers of a form giving an UUID.", notes = "")
 	@RequestMapping(value = "/forms/{formId}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public String getForm(@PathVariable("formId") String formId)
-			throws UnprocessableEntityException, EmptyResultException {
-
+	public String getForm(@PathVariable("formId") String formId) throws UnprocessableEntityException, EmptyResultException {
 		String target = FormManagerConfigurationReader.getInstance().getMachineDomain();
 		target += "/formrunner";
 		String path = "/forms/" + formId;
@@ -44,41 +39,43 @@ public class FormServices {
 
 	}
 
-	@ApiOperation(value = "Basic method to get save a form result from the formrunner.", notes = "")
+	@ApiOperation(value = "Basic method to save a form result from the formrunner.", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/forms", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String postForm(
-			@ApiParam(value = "Form result", required = true) @RequestBody(required = true) String formResult) {
-		FormManagerLogger.info(this.getClass().getName(), "Post form");
+	public String postForm(@ApiParam(value = "Form result", required = true) @RequestBody(required = true) String formResult) {
+		FormManagerLogger.info(this.getClass().getName(), "Form posted.");
+		FormManagerLogger.debug(this.getClass().getName(), formResult);
 		return formResult;
 	}
-	
-	@PostMapping("/upload") // //new annotation since 4.3
-    public String singleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
 
-        if (file.isEmpty()) {
-            // redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-            return "redirect:uploadStatus";
-        }
+	@PostMapping("/upload")
+	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 
-        try {
+		if (file.isEmpty()) {
+			// redirectAttributes.addFlashAttribute("message",
+			// "Please select a file to upload");
+			return "redirect:uploadStatus";
+		}
 
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            FormManagerLogger.info(this.getClass().getName(), "File "+ file.getOriginalFilename());
-            // FormManagerLogger.info(this.getClass().getName(), "Files recieved"+ bytes);
-            // Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            // Files.write(path, bytes);
+		try {
 
-           // redirectAttributes.addFlashAttribute("message",
-             //       "You successfully uploaded '" + file.getOriginalFilename() + "'");
+			// Get the file and save it somewhere
+			byte[] bytes = file.getBytes();
+			FormManagerLogger.info(this.getClass().getName(), "File " + file.getOriginalFilename());
+			// FormManagerLogger.info(this.getClass().getName(),
+			// "Files recieved"+ bytes);
+			// Path path = Paths.get(UPLOADED_FOLDER +
+			// file.getOriginalFilename());
+			// Files.write(path, bytes);
 
-        } catch (IOException e) {
-        	FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
-            e.printStackTrace();
-        }
+			// redirectAttributes.addFlashAttribute("message",
+			// "You successfully uploaded '" + file.getOriginalFilename() +
+			// "'");
 
-        return "redirect:/uploadStatus";
-    }
+		} catch (IOException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
+		}
+
+		return "redirect:/uploadStatus";
+	}
 }
