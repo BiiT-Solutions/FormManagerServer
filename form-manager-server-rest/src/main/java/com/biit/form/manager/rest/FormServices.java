@@ -52,33 +52,53 @@ public class FormServices {
 		FormManagerLogger.info(this.getClass().getName(), "Post form");
 		return formResult;
 	}
+
+
+	@PostMapping("/upload/{user}") // //new annotation since 4.3
+	public String fileUpload(@PathVariable("user") String user, @RequestParam("file") MultipartFile file) {
+		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user);
+		if (file.isEmpty()) {
+			return "File is empty";
+		}
+		try {
+			// Get the file and save it somewhere
+			byte[] bytes = file.getBytes();
+			FormManagerLogger.info(this.getClass().getName(), "File " + file.getOriginalFilename());
+
+		} catch (IOException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
+			e.printStackTrace();
+		}
+
+		return "File received";
+	}
 	
 	@PostMapping("/upload") // //new annotation since 4.3
-    public String singleFileUpload(@RequestParam("file") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 
-        if (file.isEmpty()) {
-            // redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-            return "redirect:uploadStatus";
-        }
+		if (file.isEmpty()) {
+			// redirectAttributes.addFlashAttribute("message", "Please select a file to
+			// upload");
+			return "redirect:uploadStatus";
+		}
 
-        try {
+		try {
 
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            FormManagerLogger.info(this.getClass().getName(), "File "+ file.getOriginalFilename());
-            // FormManagerLogger.info(this.getClass().getName(), "Files recieved"+ bytes);
-            // Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            // Files.write(path, bytes);
+			// Get the file and save it somewhere
+			byte[] bytes = file.getBytes();
+			FormManagerLogger.info(this.getClass().getName(), "File " + file.getOriginalFilename());
+			// FormManagerLogger.info(this.getClass().getName(), "Files recieved"+ bytes);
+			// Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+			// Files.write(path, bytes);
 
-           // redirectAttributes.addFlashAttribute("message",
-             //       "You successfully uploaded '" + file.getOriginalFilename() + "'");
+			// redirectAttributes.addFlashAttribute("message",
+			// "You successfully uploaded '" + file.getOriginalFilename() + "'");
 
-        } catch (IOException e) {
-        	FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
-            e.printStackTrace();
-        }
+		} catch (IOException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
+			e.printStackTrace();
+		}
 
-        return "redirect:/uploadStatus";
-    }
+		return "redirect:/uploadStatus";
+	}
 }
