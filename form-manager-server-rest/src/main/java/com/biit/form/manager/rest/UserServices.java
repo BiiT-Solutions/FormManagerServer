@@ -29,7 +29,7 @@ public class UserServices {
 	@Autowired
 	private IUserRepository userRepository;
 
-	@ApiOperation(value = "Basic method to add a new user to database.", notes = "Only one user can be added.")
+	@ApiOperation(value = "Basic method to add a new user to the database.", notes = "Only one user can be added.")
 	@RequestMapping(value = "/user/add", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	public void addUser(@ApiParam(value = "User", required = true) @RequestBody(required = true) String requestBody) {
