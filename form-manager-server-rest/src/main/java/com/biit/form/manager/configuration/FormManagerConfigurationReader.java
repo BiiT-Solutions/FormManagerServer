@@ -1,4 +1,4 @@
-package com.biit.form.configuration;
+package com.biit.form.manager.configuration;
 
 
 import java.nio.file.Path;

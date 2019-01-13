@@ -1,11 +1,11 @@
-package com.biit.form.manager.entities;
+package com.biit.form.manager.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.springframework.context.annotation.Primary;
 
-import com.biit.usermanager.entities.User;
+import com.biit.usermanager.entity.User;
 
 @Entity
 @Primary

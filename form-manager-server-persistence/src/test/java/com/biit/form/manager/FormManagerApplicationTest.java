@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan({ "com.biit.form.manager", "com.biit.usermanager" })
-@EnableJpaRepositories("com.biit.usermanager.repositories")
-@EntityScan({ "com.biit.usermanager.entities", "com.biit.form.manager.entities" })
+@EnableJpaRepositories("com.biit.usermanager.repository")
+@EntityScan({ "com.biit.usermanager.entity", "com.biit.form.manager.entity" })
 public class FormManagerApplicationTest {
 
 	public static void main(String[] args) {

@@ -16,8 +16,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @ComponentScan({ "com.biit.form.manager", "com.biit.usermanager" })
-@EnableJpaRepositories(basePackages = "com.biit.usermanager")
-@EntityScan(basePackages = "com.biit.usermanager")
+@EnableJpaRepositories("com.biit.usermanager.repository")
+@EntityScan({ "com.biit.usermanager.entity", "com.biit.form.manager.entity" })
 @EnableSwagger2
 public class FormManagerServer {
 	private final static String SWAGGER_REST_LOCATION = "com.biit.form.manager.rest";

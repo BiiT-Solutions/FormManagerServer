@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.biit.form.configuration.FormManagerConfigurationReader;
+import com.biit.form.manager.configuration.FormManagerConfigurationReader;
 import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.rest.client.RestGenericClient;
 import com.biit.rest.exceptions.EmptyResultException;

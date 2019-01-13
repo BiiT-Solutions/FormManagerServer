@@ -9,8 +9,9 @@ import org.springframework.test.context.testng.AbstractTransactionalTestNGSpring
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.biit.usermanager.entities.User;
-import com.biit.usermanager.repositories.IUserRepository;
+import com.biit.form.manager.entity.CompanyUser;
+import com.biit.usermanager.entity.User;
+import com.biit.usermanager.repository.IUserRepository;
 
 @SpringBootTest
 @Test(groups = "companyUserRepository")
