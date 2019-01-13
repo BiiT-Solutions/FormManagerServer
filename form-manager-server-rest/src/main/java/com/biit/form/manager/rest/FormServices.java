@@ -27,10 +27,10 @@ import com.biit.rest.exceptions.UnprocessableEntityException;
 @RestController
 public class FormServices {
 
-	@ApiOperation(value = "Basic method to get the answers of a form giving an UUID.", notes = "")
+	@ApiOperation(value = "Basic method to get the answers of a form from the formrunner giving an UUID.", notes = "")
 	@RequestMapping(value = "/forms/{formId}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public String getForm(@PathVariable("formId") String formId) throws UnprocessableEntityException, EmptyResultException {
+	public String getFormFromFormrunner(@PathVariable("formId") String formId) throws UnprocessableEntityException, EmptyResultException {
 		String target = FormManagerConfigurationReader.getInstance().getMachineDomain();
 		target += "/formrunner";
 		String path = "/forms/" + formId;
@@ -42,14 +42,15 @@ public class FormServices {
 	@ApiOperation(value = "Basic method to save a form result from the formrunner.", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/forms", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String postForm(@ApiParam(value = "Form result", required = true) @RequestBody(required = true) String formResult) {
+	public String saveFormResult(@ApiParam(value = "Form result", required = true) @RequestBody(required = true) String formResult) {
 		FormManagerLogger.info(this.getClass().getName(), "Form posted.");
 		FormManagerLogger.debug(this.getClass().getName(), formResult);
 		return formResult;
 	}
 
-	@PostMapping("/upload/{user}")
-	// //new annotation since 4.3
+	@ApiOperation(value = "Method to upload a file received as a multipart request", notes = "")
+	@ResponseStatus(value = HttpStatus.OK)
+	@PostMapping("/upload/{user}") // //new annotation since 4.3
 	public String fileUpload(@PathVariable("user") String user, @RequestParam("file") MultipartFile file) {
 		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user);
 		if (file.isEmpty()) {
@@ -62,18 +63,19 @@ public class FormServices {
 
 		} catch (IOException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
+			e.printStackTrace();
 		}
 
 		return "File received";
 	}
-
-	@PostMapping("/upload")
-	// //new annotation since 4.3
+	
+	// TODO Deprecated since the user is not sent with the request and is needed to link the form to a user.
+	@ApiOperation(value = "Method to upload a file received as a multipart request", notes = "")
+	@PostMapping("/upload") // //new annotation since 4.3
 	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 
 		if (file.isEmpty()) {
-			// redirectAttributes.addFlashAttribute("message", "Please select a
-			// file to
+			// redirectAttributes.addFlashAttribute("message", "Please select a file to
 			// upload");
 			return "redirect:uploadStatus";
 		}
@@ -83,15 +85,12 @@ public class FormServices {
 			// Get the file and save it somewhere
 			byte[] bytes = file.getBytes();
 			FormManagerLogger.info(this.getClass().getName(), "File " + file.getOriginalFilename());
-			// FormManagerLogger.info(this.getClass().getName(),
-			// "Files recieved"+ bytes);
-			// Path path = Paths.get(UPLOADED_FOLDER +
-			// file.getOriginalFilename());
+			// FormManagerLogger.info(this.getClass().getName(), "Files recieved"+ bytes);
+			// Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
 			// Files.write(path, bytes);
 
 			// redirectAttributes.addFlashAttribute("message",
-			// "You successfully uploaded '" + file.getOriginalFilename() +
-			// "'");
+			// "You successfully uploaded '" + file.getOriginalFilename() + "'");
 
 		} catch (IOException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
