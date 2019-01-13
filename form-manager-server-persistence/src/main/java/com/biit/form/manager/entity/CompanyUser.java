@@ -29,7 +29,7 @@ public class CompanyUser extends User {
 	}
 
 	public void setCompany(String company) {
-		this.company = company;
+		this.company = company.trim();
 	}
 
 	public String getFolder() {
@@ -37,6 +37,6 @@ public class CompanyUser extends User {
 	}
 
 	public void setFolder(String folder) {
-		this.folder = folder;
+		this.folder = folder.trim();
 	}
 }

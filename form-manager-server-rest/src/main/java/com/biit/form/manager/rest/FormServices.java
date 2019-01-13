@@ -48,8 +48,8 @@ public class FormServices {
 		return formResult;
 	}
 
-
-	@PostMapping("/upload/{user}") // //new annotation since 4.3
+	@PostMapping("/upload/{user}")
+	// //new annotation since 4.3
 	public String fileUpload(@PathVariable("user") String user, @RequestParam("file") MultipartFile file) {
 		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user);
 		if (file.isEmpty()) {
@@ -62,17 +62,18 @@ public class FormServices {
 
 		} catch (IOException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
-			e.printStackTrace();
 		}
 
 		return "File received";
 	}
-	
-	@PostMapping("/upload") // //new annotation since 4.3
+
+	@PostMapping("/upload")
+	// //new annotation since 4.3
 	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 
 		if (file.isEmpty()) {
-			// redirectAttributes.addFlashAttribute("message", "Please select a file to
+			// redirectAttributes.addFlashAttribute("message", "Please select a
+			// file to
 			// upload");
 			return "redirect:uploadStatus";
 		}
@@ -82,12 +83,15 @@ public class FormServices {
 			// Get the file and save it somewhere
 			byte[] bytes = file.getBytes();
 			FormManagerLogger.info(this.getClass().getName(), "File " + file.getOriginalFilename());
-			// FormManagerLogger.info(this.getClass().getName(), "Files recieved"+ bytes);
-			// Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+			// FormManagerLogger.info(this.getClass().getName(),
+			// "Files recieved"+ bytes);
+			// Path path = Paths.get(UPLOADED_FOLDER +
+			// file.getOriginalFilename());
 			// Files.write(path, bytes);
 
 			// redirectAttributes.addFlashAttribute("message",
-			// "You successfully uploaded '" + file.getOriginalFilename() + "'");
+			// "You successfully uploaded '" + file.getOriginalFilename() +
+			// "'");
 
 		} catch (IOException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());

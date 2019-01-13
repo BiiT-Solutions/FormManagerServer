@@ -4,10 +4,12 @@
 		<groups>
 			<run>
 				<include name="authentication" />
+				<include name="userFactory" />
 			</run>
 		</groups>
 		<classes>
 			<class name="com.biit.form.manager.security.AuthenticationServiceTest" />
+			<class name="com.biit.form.manager.users.UserFactoryTest" />
 		</classes>
 	</test>
 </suite>
