@@ -8,7 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.biit.usermanager.entity.IUser;
-import com.biit.usermanager.persistence.IUserRepository;
+import com.biit.usermanager.repositories.IUserRepository;
 import com.biit.usermanager.security.IAuthenticationService;
 import com.biit.usermanager.security.exceptions.AuthenticationRequired;
 import com.biit.usermanager.security.exceptions.InvalidCredentialsException;

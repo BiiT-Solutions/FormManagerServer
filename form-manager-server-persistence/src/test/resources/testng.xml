@@ -3,11 +3,11 @@
 	<test name="FormManagerServer" enabled="true" preserve-order="true">
 		<groups>
 			<run>
-				<!-- <include name="" /> -->
+				<include name="companyUserRepository" />
 			</run>
 		</groups>
 		<classes>
-			<!-- <class name="com.biit." /> -->
+			<class name="com.biit.form.manager.entities.CompanyUserRepositoryTest" />
 		</classes>
 	</test>
 </suite>
