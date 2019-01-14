@@ -67,13 +67,15 @@ public class FormServices {
 
 	@ApiOperation(value = "Method to upload a file received as a multipart request", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
-	@PostMapping("/upload/{user}/formId/{formId}")
-	// //new annotation since 4.3
-	public String fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @RequestParam("file") MultipartFile file) {
-		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + " and formId " + formId);
+	@PostMapping("/upload/{user}/formId/{formId}/category/{categoryName}") // //new annotation since 4.3
+	public String fileUpload(
+			@PathVariable("user") String user, 
+			@PathVariable("formId") String formId,
+			@PathVariable("categoryName") String categoryName, 
+			@RequestParam("file") MultipartFile file) {
+		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + " formId " + formId + " and category " + categoryName);
 		if (file.isEmpty()) {
-			// redirectAttributes.addFlashAttribute("message", "Please select a
-			// file to
+			// redirectAttributes.addFlashAttribute("message", "Please select a file to
 			// upload");
 			return "File is empty";
 		}
@@ -81,15 +83,12 @@ public class FormServices {
 			// Get the file and save it somewhere
 			byte[] bytes = file.getBytes();
 			FormManagerLogger.info(this.getClass().getName(), "File " + file.getOriginalFilename());
-			// FormManagerLogger.info(this.getClass().getName(),
-			// "Files recieved"+ bytes);
-			// Path path = Paths.get(UPLOADED_FOLDER +
-			// file.getOriginalFilename());
+			// FormManagerLogger.info(this.getClass().getName(), "Files recieved"+ bytes);
+			// Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
 			// Files.write(path, bytes);
 
 			// redirectAttributes.addFlashAttribute("message",
-			// "You successfully uploaded '" + file.getOriginalFilename() +
-			// "'");
+			// "You successfully uploaded '" + file.getOriginalFilename() + "'");
 
 		} catch (IOException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
