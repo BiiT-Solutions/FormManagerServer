@@ -38,7 +38,7 @@ public class SecurityServices {
 	@ResponseStatus(HttpStatus.OK)
 	public CompanyUser login(@ApiParam(value = "", required = true) @RequestBody(required = true) LoginForm loginForm)
 			throws InvalidUserException, InternalServerException {
-		FormManagerLogger.info(this.getClass().getName(), "User " + loginForm.getUsername() + " succesfully logged in");
+		// FormManagerLogger.info(this.getClass().getName(), "User " + loginForm.getUsername() + " succesfully logged in");
 		if (loginForm.getUsername().equals("admin")) {
 			FormManagerLogger.info(this.getClass().getName(),
 					"User " + loginForm.getUsername() + " succesfully logged in");
