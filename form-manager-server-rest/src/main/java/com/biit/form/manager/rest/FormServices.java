@@ -27,17 +27,6 @@ import com.biit.rest.exceptions.UnprocessableEntityException;
 @RestController
 public class FormServices {
 
-	@ApiOperation(value = "Basic method to get the answers of a form from the formrunner giving an UUID.", notes = "")
-	@RequestMapping(value = "/forms/{formId}", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public String getFormFromFormrunner(@PathVariable("formId") String formId) throws UnprocessableEntityException, EmptyResultException {
-		String target = FormManagerConfigurationReader.getInstance().getMachineDomain();
-		target += "/formrunner";
-		String path = "/forms/" + formId;
-		String messageType = "application/json";
-		return RestGenericClient.get(false, target, path, messageType, false, null);
-
-	}
 
 	@ApiOperation(value = "Basic method to save a form result from the formrunner.", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -54,34 +43,11 @@ public class FormServices {
 	public String fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @RequestParam("file") MultipartFile file) {
 		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + "and formId " + formId);
 		if (file.isEmpty()) {
+			// redirectAttributes.addFlashAttribute("message", "Please select a file to
+			// upload");
 			return "File is empty";
 		}
 		try {
-			// Get the file and save it somewhere
-			byte[] bytes = file.getBytes();
-			FormManagerLogger.info(this.getClass().getName(), "File " + file.getOriginalFilename());
-
-		} catch (IOException e) {
-			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
-			e.printStackTrace();
-		}
-
-		return "File received";
-	}
-	
-	// TODO Deprecated since the user is not sent with the request and is needed to link the form to a user.
-	@ApiOperation(value = "Method to upload a file received as a multipart request", notes = "")
-	@PostMapping("/upload") // //new annotation since 4.3
-	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
-
-		if (file.isEmpty()) {
-			// redirectAttributes.addFlashAttribute("message", "Please select a file to
-			// upload");
-			return "redirect:uploadStatus";
-		}
-
-		try {
-
 			// Get the file and save it somewhere
 			byte[] bytes = file.getBytes();
 			FormManagerLogger.info(this.getClass().getName(), "File " + file.getOriginalFilename());
@@ -92,11 +58,13 @@ public class FormServices {
 			// redirectAttributes.addFlashAttribute("message",
 			// "You successfully uploaded '" + file.getOriginalFilename() + "'");
 
+
 		} catch (IOException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
 			e.printStackTrace();
 		}
 
-		return "redirect:/uploadStatus";
+		return "File received";
 	}
+	
 }

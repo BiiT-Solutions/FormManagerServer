@@ -32,49 +32,33 @@ public class SecurityServices {
 	@Autowired
 	private IAuthenticationService<Long, Long> authenticationService;
 
-	@ApiOperation(value = "Basic method to check if the server is online.", notes = "The password is send in plain text. It is recommended the use of HTTPS for security reasons.")
-	@RequestMapping(value = "/security/user/{userName}/password/{password}", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public void authorization(
-			@ApiParam(value = "UserName", required = true) @PathVariable(value = "userName", required = true) String userName,
-			@ApiParam(value = "password", required = true) @PathVariable(value = "password", required = true) String password)
-			throws InvalidUserException, InternalServerException {
-		try {
-
-			if (userName == "admin") {
-				// return "{ user: req.body.username, token: 'wwwwwww' }";
-			} else {
-				authenticationService.authenticate(userName, password);
-				// throw new InvalidUserException("Invalid user '" + userName + "' or password incorrect.");			
-			}
-
-		} catch (UserManagementException | AuthenticationRequired e) {
-			FormManagerLogger.errorMessage(this.getClass().getName(), e);
-			throw new InternalServerException(e);
-		} catch (InvalidCredentialsException | UserDoesNotExistException e) {
-			FormManagerLogger.warning(this.getClass().getName(),
-					"Invalid user '" + userName + "' with password '" + password + "'.");
-			throw new InvalidUserException("Invalid user '" + userName + "' or password incorrect.", e);
-		}
-
-	}
 
 	@ApiOperation(value = "Basic method to check if the server is online.", notes = "")
 	@RequestMapping(value = "/security/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public CompanyUser login(@ApiParam(value = "", required = true) @RequestBody(required = true) LoginForm loginForm)
-			throws InvalidUserException {
+			throws InvalidUserException, InternalServerException {
 		FormManagerLogger.info(this.getClass().getName(), "User " + loginForm.getUsername() + " succesfully logged in");
 		if (loginForm.getUsername().equals("admin")) {
 			FormManagerLogger.info(this.getClass().getName(),
 					"User " + loginForm.getUsername() + " succesfully logged in");
-			CompanyUser adminUser = new CompanyUser(); 
+			CompanyUser adminUser = new CompanyUser();
 			adminUser.setLoginName("admin");
 			adminUser.setFirstName("admin");
 			FormManagerLogger.info(this.getClass().getName(), adminUser.toString());
 			return adminUser;
 			// return "{ \"user\": \"admin\", \"token\": \"wwwwwww\" }";
 		} else {
+			try {
+				authenticationService.authenticate(loginForm.getUsername(), loginForm.getPassword());
+			} catch (UserManagementException | AuthenticationRequired e) {
+				FormManagerLogger.errorMessage(this.getClass().getName(), e);
+				throw new InternalServerException(e);
+			} catch (InvalidCredentialsException | UserDoesNotExistException e) {
+				FormManagerLogger.warning(this.getClass().getName(),
+						"Invalid user '" + loginForm.getUsername() + "' with password '" + loginForm.getPassword() + "'.");
+				throw new InvalidUserException("Invalid user '" + loginForm.getUsername() + "' or password incorrect.", e);
+			}
 			throw new InvalidUserException("Invalid user '" + loginForm.getUsername() + "' or password incorrect.");
 		}
 	}
