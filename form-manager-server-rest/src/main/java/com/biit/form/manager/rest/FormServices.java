@@ -27,11 +27,11 @@ import com.biit.rest.exceptions.UnprocessableEntityException;
 @RestController
 public class FormServices {
 
-
 	@ApiOperation(value = "Basic method to save a form result from the formrunner.", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/forms", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String saveFormResult(@ApiParam(value = "Form result", required = true) @RequestBody(required = true) String formResult) {
+	public String saveFormResult(
+			@ApiParam(value = "Form result", required = true) @RequestBody(required = true) String formResult) {
 		FormManagerLogger.info(this.getClass().getName(), "Form posted.");
 		FormManagerLogger.debug(this.getClass().getName(), formResult);
 		return formResult;
@@ -39,9 +39,13 @@ public class FormServices {
 
 	@ApiOperation(value = "Method to upload a file received as a multipart request", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
-	@PostMapping("/upload/{user}/formId/{formId}") // //new annotation since 4.3
-	public String fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @RequestParam("file") MultipartFile file) {
-		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + " and formId " + formId);
+	@PostMapping("/upload/{user}/formId/{formId}/category/{categoryName}") // //new annotation since 4.3
+	public String fileUpload(
+			@PathVariable("user") String user, 
+			@PathVariable("formId") String formId,
+			@PathVariable("categoryName") String categoryName, 
+			@RequestParam("file") MultipartFile file) {
+		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + " formId " + formId + " and category " + categoryName);
 		if (file.isEmpty()) {
 			// redirectAttributes.addFlashAttribute("message", "Please select a file to
 			// upload");
@@ -58,7 +62,6 @@ public class FormServices {
 			// redirectAttributes.addFlashAttribute("message",
 			// "You successfully uploaded '" + file.getOriginalFilename() + "'");
 
-
 		} catch (IOException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
 			e.printStackTrace();
@@ -66,5 +69,5 @@ public class FormServices {
 
 		return "File received";
 	}
-	
+
 }
