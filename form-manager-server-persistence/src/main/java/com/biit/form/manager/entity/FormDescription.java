@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Primary;
 
 @Entity
 @Primary
-@Table(name = "forms")
+@Table(name = "form_descriptions")
 public class FormDescription {
 
 	@Id

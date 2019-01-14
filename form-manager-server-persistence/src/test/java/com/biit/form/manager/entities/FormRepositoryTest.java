@@ -26,7 +26,7 @@ import com.lowagie.text.DocumentException;
 
 @SpringBootTest
 @Test(groups = "formRepository")
-@Rollback(true)
+@Rollback(false)
 public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContextTests {
 	private final static String USER_LOGIN = "oqueen";
 	private final static String USER_PASSWORD = "arrow";
@@ -83,5 +83,14 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 		form = formDescriptionRepository.save(form);
 		Assert.assertEquals(forms.size(), 1);
 		Assert.assertNotNull(form.getPdfContent());
+	}
+
+	@Test
+	public void searchForm() {
+		Assert.assertNotNull(formDescriptionRepository.findByUser(user));
+
+		CompanyUser companyUser = new CompanyUser(USER_LOGIN + "_2", USER_PASSWORD + "_2", USER_EMAIL + "_2", USER_FIRSTNAME, USER_LASTNAME, COMPANY, FOLDER);
+		companyUser = userRepository.save(companyUser);
+		Assert.assertTrue(formDescriptionRepository.findByUser(companyUser).isEmpty());
 	}
 }
