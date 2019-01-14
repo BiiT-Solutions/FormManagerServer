@@ -18,6 +18,7 @@ import com.biit.usermanager.security.exceptions.AuthenticationRequired;
 import com.biit.usermanager.security.exceptions.InvalidCredentialsException;
 import com.biit.usermanager.security.exceptions.UserDoesNotExistException;
 import com.biit.usermanager.security.exceptions.UserManagementException;
+import com.biit.form.manager.entity.CompanyUser;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -61,13 +62,18 @@ public class SecurityServices {
 	@ApiOperation(value = "Basic method to check if the server is online.", notes = "")
 	@RequestMapping(value = "/security/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public String login(@ApiParam(value = "", required = true) @RequestBody(required = true) LoginForm loginForm)
+	public CompanyUser login(@ApiParam(value = "", required = true) @RequestBody(required = true) LoginForm loginForm)
 			throws InvalidUserException {
 		FormManagerLogger.info(this.getClass().getName(), "User " + loginForm.getUsername() + " succesfully logged in");
 		if (loginForm.getUsername().equals("admin")) {
 			FormManagerLogger.info(this.getClass().getName(),
 					"User " + loginForm.getUsername() + " succesfully logged in");
-			return "{ \"user\": \"admin\", \"token\": \"wwwwwww\" }";
+			CompanyUser adminUser = new CompanyUser(); 
+			adminUser.setLoginName("admin");
+			adminUser.setFirstName("admin");
+			FormManagerLogger.info(this.getClass().getName(), adminUser.toString());
+			return adminUser;
+			// return "{ \"user\": \"admin\", \"token\": \"wwwwwww\" }";
 		} else {
 			throw new InvalidUserException("Invalid user '" + loginForm.getUsername() + "' or password incorrect.");
 		}
