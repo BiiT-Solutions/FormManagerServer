@@ -50,9 +50,9 @@ public class FormServices {
 
 	@ApiOperation(value = "Method to upload a file received as a multipart request", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
-	@PostMapping("/upload/{user}") // //new annotation since 4.3
-	public String fileUpload(@PathVariable("user") String user, @RequestParam("file") MultipartFile file) {
-		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user);
+	@PostMapping("/upload/{user}/formId/{formId}") // //new annotation since 4.3
+	public String fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @RequestParam("file") MultipartFile file) {
+		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + "and formId " + formId);
 		if (file.isEmpty()) {
 			return "File is empty";
 		}
