@@ -41,7 +41,7 @@ public class FormServices {
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping("/upload/{user}/formId/{formId}") // //new annotation since 4.3
 	public String fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @RequestParam("file") MultipartFile file) {
-		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + "and formId " + formId);
+		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + " and formId " + formId);
 		if (file.isEmpty()) {
 			// redirectAttributes.addFlashAttribute("message", "Please select a file to
 			// upload");
