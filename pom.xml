@@ -5,7 +5,7 @@
 	<groupId>com.biit</groupId>
 	<artifactId>form-manager-server</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.35-SNAPSHOT</version>
+	<version>0.0.38-SNAPSHOT</version>
 	<name>Form Manager Server</name>
 
 	<parent>
