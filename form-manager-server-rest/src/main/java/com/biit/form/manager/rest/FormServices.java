@@ -16,34 +16,64 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.biit.form.manager.configuration.FormManagerConfigurationReader;
+import com.biit.form.manager.form.PdfConverter;
 import com.biit.form.manager.logger.FormManagerLogger;
-import com.biit.rest.client.RestGenericClient;
-import com.biit.rest.exceptions.EmptyResultException;
-import com.biit.rest.exceptions.UnprocessableEntityException;
+import com.biit.form.manager.rest.exceptions.InvalidFormException;
+import com.biit.form.manager.rest.exceptions.PdfNotGeneratedException;
+import com.biit.form.result.FormResult;
+import com.biit.form.result.pdf.exceptions.EmptyPdfBodyException;
+import com.biit.form.result.pdf.exceptions.InvalidElementException;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.lowagie.text.DocumentException;
 
 @RestController
 public class FormServices {
 
-
 	@ApiOperation(value = "Basic method to save a form result from the formrunner.", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/forms", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public String saveFormResult(@ApiParam(value = "Form result", required = true) @RequestBody(required = true) String formResult) {
+	@RequestMapping(value = "/forms", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public byte[] saveFormResult(@ApiParam(value = "Form result", required = true) @RequestBody(required = true) String body) throws InvalidFormException,
+			PdfNotGeneratedException {
 		FormManagerLogger.info(this.getClass().getName(), "Form posted.");
-		FormManagerLogger.debug(this.getClass().getName(), formResult);
-		return formResult;
+		try {
+			SubmittedForm submittedForm = parsePetition(body);
+			if (submittedForm == null) {
+				throw new InvalidFormException("Form not correctly submitted.");
+			}
+			FormResult formResult = FormResult.fromJson(submittedForm.getJson());
+			if (formResult == null) {
+				throw new InvalidFormException("Form not found.");
+			}
+
+			// Convert to PDF.
+			try {
+				byte[] pdfContent = PdfConverter.convertToPdf(formResult);
+				return pdfContent;
+			} catch (EmptyPdfBodyException | DocumentException | InvalidElementException e) {
+				throw new PdfNotGeneratedException("Pdf creation error.", e);
+			}
+
+		} catch (JsonSyntaxException e) {
+			throw new InvalidFormException("Structure invalid", e);
+		}
+	}
+
+	private SubmittedForm parsePetition(String petition) throws JsonSyntaxException {
+		FormManagerLogger.debug(this.getClass().getName(), petition);
+		return new Gson().fromJson(petition, SubmittedForm.class);
 	}
 
 	@ApiOperation(value = "Method to upload a file received as a multipart request", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
-	@PostMapping("/upload/{user}/formId/{formId}") // //new annotation since 4.3
+	@PostMapping("/upload/{user}/formId/{formId}")
+	// //new annotation since 4.3
 	public String fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @RequestParam("file") MultipartFile file) {
 		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + " and formId " + formId);
 		if (file.isEmpty()) {
-			// redirectAttributes.addFlashAttribute("message", "Please select a file to
+			// redirectAttributes.addFlashAttribute("message", "Please select a
+			// file to
 			// upload");
 			return "File is empty";
 		}
@@ -51,13 +81,15 @@ public class FormServices {
 			// Get the file and save it somewhere
 			byte[] bytes = file.getBytes();
 			FormManagerLogger.info(this.getClass().getName(), "File " + file.getOriginalFilename());
-			// FormManagerLogger.info(this.getClass().getName(), "Files recieved"+ bytes);
-			// Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+			// FormManagerLogger.info(this.getClass().getName(),
+			// "Files recieved"+ bytes);
+			// Path path = Paths.get(UPLOADED_FOLDER +
+			// file.getOriginalFilename());
 			// Files.write(path, bytes);
 
 			// redirectAttributes.addFlashAttribute("message",
-			// "You successfully uploaded '" + file.getOriginalFilename() + "'");
-
+			// "You successfully uploaded '" + file.getOriginalFilename() +
+			// "'");
 
 		} catch (IOException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
@@ -66,5 +98,5 @@ public class FormServices {
 
 		return "File received";
 	}
-	
+
 }
