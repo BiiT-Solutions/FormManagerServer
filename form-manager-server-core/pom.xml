@@ -16,11 +16,6 @@
 			<artifactId>form-manager-server-persistence</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.biit</groupId>
-			<artifactId>form-result-pdf</artifactId>
-			<version>${form-result-pdf.version}</version>
-		</dependency>
 
 		<!-- File access and logger -->
 		<dependency>

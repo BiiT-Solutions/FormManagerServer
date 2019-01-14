@@ -31,9 +31,9 @@ public class CompanyUserRepositoryTest extends AbstractTransactionalTestNGSpring
 	private IUserRepository userRepository;
 
 	@Test
-	public void saveUser() {
-		CompanyUser User = new CompanyUser(USER_LOGIN, USER_PASSWORD, USER_EMAIL, USER_FIRSTNAME, USER_LASTNAME, COMPANY, FOLDER);
-		userRepository.save(User);
+	public CompanyUser saveUser() {
+		CompanyUser user = new CompanyUser(USER_LOGIN, USER_PASSWORD, USER_EMAIL, USER_FIRSTNAME, USER_LASTNAME, COMPANY, FOLDER);
+		userRepository.save(user);
 
 		List<User> users = userRepository.findAll();
 		Assert.assertEquals(users.size(), 1);
@@ -42,5 +42,6 @@ public class CompanyUserRepositoryTest extends AbstractTransactionalTestNGSpring
 		Assert.assertEquals(users.get(0).getEmailAddress(), USER_EMAIL);
 		Assert.assertEquals(((CompanyUser) users.get(0)).getCompany(), COMPANY);
 		Assert.assertEquals(((CompanyUser) users.get(0)).getFolder(), FOLDER);
+		return (CompanyUser) users.get(0);
 	}
 }
