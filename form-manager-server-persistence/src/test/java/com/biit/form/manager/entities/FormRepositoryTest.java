@@ -26,7 +26,7 @@ import com.lowagie.text.DocumentException;
 
 @SpringBootTest
 @Test(groups = "formRepository")
-@Rollback(false)
+@Rollback(true)
 public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContextTests {
 	private final static String USER_LOGIN = "oqueen";
 	private final static String USER_PASSWORD = "arrow";

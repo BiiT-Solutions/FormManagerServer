@@ -33,6 +33,8 @@ public class UploadedFile {
 
 	public UploadedFile(FormDescription formDescription, byte[] content) {
 		this();
+		setFormDescription(formDescription);
+		setContent(content);
 	}
 
 	public Long getId() {

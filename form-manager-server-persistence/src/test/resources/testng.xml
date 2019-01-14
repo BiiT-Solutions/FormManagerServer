@@ -5,6 +5,7 @@
 			<run>
 				<include name="companyUserRepository" />
 				<include name="formRepository" />
+				<include name="uploadedFileRepository" />
 			</run>
 		</groups>
 		<classes>
