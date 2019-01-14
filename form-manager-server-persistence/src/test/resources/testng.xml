@@ -10,6 +10,7 @@
 		<classes>
 			<class name="com.biit.form.manager.entities.CompanyUserRepositoryTest" />
 			<class name="com.biit.form.manager.entities.FormRepositoryTest" />
+			<class name="com.biit.form.manager.entities.UploadedFileRepositoryTest" />
 		</classes>
 	</test>
 </suite>
