@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @ComponentScan({ "com.biit.form.manager", "com.biit.usermanager" })
-@EnableJpaRepositories("com.biit.usermanager.repository")
+@EnableJpaRepositories({ "com.biit.usermanager.repository", "com.biit.form.manager.repository" })
 @EntityScan({ "com.biit.usermanager.entity", "com.biit.form.manager.entity" })
 @EnableSwagger2
 public class FormManagerServer {
