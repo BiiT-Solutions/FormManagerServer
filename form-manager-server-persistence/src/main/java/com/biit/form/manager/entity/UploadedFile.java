@@ -70,4 +70,9 @@ public class UploadedFile extends StoredFile {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+
+	@Override
+	public String toString() {
+		return getFileName();
+	}
 }

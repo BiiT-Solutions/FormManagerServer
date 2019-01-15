@@ -4,7 +4,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 
 import com.biit.form.entity.TreeObject;
-import com.biit.form.manager.configuration.FormManagerConfigurationReader;
 import com.biit.form.manager.entity.FormDescription;
 import com.biit.form.manager.entity.UploadedFile;
 import com.biit.form.result.FormResult;
@@ -22,8 +21,7 @@ public class FileManager {
 	}
 
 	public static String pdfFilePath(FormDescription formDescription) {
-		return FolderManager.getPdfFormPath(formDescription.getUser()) + File.separator + FormManagerConfigurationReader.getInstance().getPdfStoredFolder()
-				+ getPdfFileName(formDescription);
+		return FolderManager.getPdfFolderPath(formDescription.getUser()) + getPdfFileName(formDescription);
 	}
 
 	private static int getCategoryIndex(FormDescription formDescription, String categoryLabel) {
@@ -42,8 +40,7 @@ public class FileManager {
 	}
 
 	public static String attachedFilesPath(UploadedFile uploadedFile) {
-		return FolderManager.getAttachedFilesRootPath(uploadedFile.getFormDescription().getUser()) + File.separator
-				+ FormManagerConfigurationReader.getInstance().getAttachedFilesStoredFolder() + getDocumentationFolder(uploadedFile) + "";
+		return FolderManager.getAttachedFilesRootPath(uploadedFile.getFormDescription().getUser()) + File.separator + uploadedFile.getFileName();
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.biit.form.manager.folders;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -61,5 +62,13 @@ public class FileManagerTest extends AbstractTransactionalTestNGSpringContextTes
 		for (int i = 0; i < CATEGORY_LABELS.length; i++) {
 			Assert.assertEquals(FileManager.getDocumentationFolder(uploadedFiles.get(i)), FINAL_FOLDERS[i]);
 		}
+	}
+
+	@Test
+	public void createFolders() {
+		String path = System.getProperty("java.io.tmpdir") + File.separator + "folder1" + File.separator + "folder2" + File.separator + "folder3";
+		FolderManager.createDirectoryStructureIfNeeded(path);
+		File file = new File(path);
+		Assert.assertTrue(file.exists() && file.isDirectory());
 	}
 }

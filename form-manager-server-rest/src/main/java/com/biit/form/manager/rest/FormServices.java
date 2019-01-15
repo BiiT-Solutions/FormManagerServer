@@ -21,10 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.biit.form.manager.controller.IFormController;
 import com.biit.form.manager.entity.FormDescription;
 import com.biit.form.manager.entity.UploadedFile;
-import com.biit.form.manager.folders.FileManager;
 import com.biit.form.manager.form.PdfConverter;
 import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.form.manager.repository.IFormDescriptionRepository;
+import com.biit.form.manager.repository.IUploadedFileRepository;
 import com.biit.form.manager.rest.exceptions.DatabaseException;
 import com.biit.form.manager.rest.exceptions.FileNotUploadedException;
 import com.biit.form.manager.rest.exceptions.InvalidFormException;
@@ -46,6 +46,9 @@ public class FormServices {
 
 	@Autowired
 	private IFormDescriptionRepository formDescriptionRepository;
+
+	@Autowired
+	private IUploadedFileRepository uploadedFileRepository;
 
 	@Autowired
 	private IFormController formController;
@@ -82,7 +85,8 @@ public class FormServices {
 				FormManagerLogger.info(this.getClass().getName(), "Form '" + formDescription + "' stored correctly!.");
 
 				try {
-					formController.storePdfForm(formDescription, FileManager.pdfFilePath(formDescription));
+					// Store file on NAS
+					formController.storePdfForm(formDescription);
 				} catch (IOException e) {
 					throw new PdfNotGeneratedException("Pdf File not stored into the folder.", e);
 				}
@@ -110,21 +114,26 @@ public class FormServices {
 	@PostMapping("/upload/{user}/formId/{formId}/category/{categoryLabel}")
 	// //new annotation since 4.3
 	public void fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @PathVariable("categoryLabel") String categoryLabel,
-			@RequestParam("file") MultipartFile file) throws FileNotUploadedException {
+			@RequestParam("file") MultipartFile file) throws FileNotUploadedException, InvalidFormException, DatabaseException {
 		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user '" + user + "', form '" + formId + "', category '" + categoryLabel
 				+ "', and file '" + file.getOriginalFilename() + "'.");
 		if (file.isEmpty()) {
 			throw new FileNotUploadedException("File is empty!");
 		}
 		try {
-			// Get the file and save it somewhere
-			byte[] bytes = file.getBytes();
-			FormDescription formDescription = formDescriptionRepository.findByDocument(formId);
-			UploadedFile uploadFile = new UploadedFile(formDescription, bytes, categoryLabel, file.getOriginalFilename());
+			// Store it on database.
+			UploadedFile uploadedFile = formController.storeOnDatabase(file.getBytes(), file.getOriginalFilename(), formId, categoryLabel);
 
-		} catch (IOException e) {
+			try {
+				// Store file on NAS
+				formController.storeUploadedFile(uploadedFile);
+			} catch (IOException e) {
+				throw new FileNotUploadedException("Attached File '" + uploadedFile + "' not stored into the folder.", e);
+			}
+
+		} catch (FileNotUploadedException | IOException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);
-			throw new FileNotUploadedException("Error uploading the file", e);
+			throw new DatabaseException("Form has not been stored into the database", e);
 		}
 	}
 

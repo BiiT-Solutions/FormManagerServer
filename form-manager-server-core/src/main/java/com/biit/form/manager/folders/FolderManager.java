@@ -11,7 +11,7 @@ public class FolderManager {
 		return FormManagerConfigurationReader.getInstance().getFormsUrl() + File.separator + user.getFolder();
 	}
 
-	public static String getPdfFormPath(CompanyUser user) {
+	public static String getPdfFolderPath(CompanyUser user) {
 		return getUserPath(user) + File.separator + FormManagerConfigurationReader.getInstance().getPdfStoredFolder();
 	}
 
@@ -19,4 +19,11 @@ public class FolderManager {
 		return getUserPath(user) + File.separator + FormManagerConfigurationReader.getInstance().getAttachedFilesStoredFolder();
 	}
 
+	public static void createDirectoryStructureIfNeeded(String path) {
+		if (!path.endsWith(File.separator)) {
+			path += File.separator;
+		}
+		File outFile = new File(path);
+		outFile.mkdirs();
+	}
 }
