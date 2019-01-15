@@ -30,14 +30,14 @@ public class FileManager {
 		FormResult formResult = FormResult.fromJson(formDescription.getJsonContent());
 		for (TreeObject categoryResult : formResult.getChildren()) {
 			if (categoryResult.getLabel().equalsIgnoreCase(categoryLabel)) {
-				return formResult.getIndex(categoryResult);
+				return formResult.getIndex(categoryResult) + 1;
 			}
 		}
-		return 0;
+		return -1;
 	}
 
 	public static String getDocumentationFolder(UploadedFile uploadedFile) {
-		return String.format("%2d%s%s", getCategoryIndex(uploadedFile.getFormDescription(), uploadedFile.getCategory()), DOCUMENTATION_PREFIX, uploadedFile
+		return String.format("%02d%s%s", getCategoryIndex(uploadedFile.getFormDescription(), uploadedFile.getCategory()), DOCUMENTATION_PREFIX, uploadedFile
 				.getCategory().toUpperCase());
 	}
 
