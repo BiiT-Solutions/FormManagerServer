@@ -102,11 +102,11 @@ public class FormServices {
 
 	@ApiOperation(value = "Method to upload a file received as a multipart request", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
-	@PostMapping("/upload/{user}/formId/{formId}/category/{categoryName}")
+	@PostMapping("/upload/{user}/formId/{formId}/category/{categoryLabel}")
 	// //new annotation since 4.3
-	public String fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @PathVariable("categoryName") String categoryName,
+	public String fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @PathVariable("categoryLabel") String categoryLabel,
 			@RequestParam("file") MultipartFile file) {
-		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + " formId " + formId + " and category " + categoryName);
+		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + " formId " + formId + " and category " + categoryLabel);
 		if (file.isEmpty()) {
 			// redirectAttributes.addFlashAttribute("message", "Please select a
 			// file to

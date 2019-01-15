@@ -20,7 +20,6 @@ import com.biit.form.result.FormResult;
 import com.biit.form.result.pdf.FormAsPdf;
 import com.biit.form.result.pdf.exceptions.EmptyPdfBodyException;
 import com.biit.form.result.pdf.exceptions.InvalidElementException;
-import com.biit.usermanager.entity.User;
 import com.biit.usermanager.repository.IUserRepository;
 import com.lowagie.text.DocumentException;
 
@@ -39,8 +38,6 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 
 	private final static String FORM_AS_JSON = "EminForm.json";
 
-	private CompanyUser user;
-
 	@Autowired
 	private IUserRepository userRepository;
 
@@ -48,29 +45,17 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 	private IFormDescriptionRepository formDescriptionRepository;
 
 	@Test
-	public void saveUser() {
-		CompanyUser companyUser = new CompanyUser(USER_LOGIN, USER_PASSWORD, USER_EMAIL, USER_FIRSTNAME, USER_LASTNAME, COMPANY, FOLDER);
-		userRepository.save(companyUser);
-
-		List<User> users = userRepository.findAll();
-		Assert.assertEquals(users.size(), 1);
-		Assert.assertEquals(users.get(0).getFirstName(), USER_FIRSTNAME);
-		Assert.assertEquals(users.get(0).getLastName(), USER_LASTNAME);
-		Assert.assertEquals(users.get(0).getEmailAddress(), USER_EMAIL);
-		Assert.assertEquals(((CompanyUser) users.get(0)).getCompany(), COMPANY);
-		Assert.assertEquals(((CompanyUser) users.get(0)).getFolder(), FOLDER);
-		user = (CompanyUser) users.get(0);
-	}
-
-	@Test
 	public void saveForm() throws IOException, URISyntaxException, EmptyPdfBodyException, DocumentException, InvalidElementException {
+		CompanyUser companyUser = new CompanyUser(USER_LOGIN, USER_PASSWORD, USER_EMAIL, USER_FIRSTNAME, USER_LASTNAME, COMPANY, FOLDER);
+		companyUser = userRepository.save(companyUser);
+
 		// Load form from json file in resources.
 		String text = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource(FORM_AS_JSON).toURI())));
-		FormDescription form = new FormDescription(user, text);
+		FormDescription form = new FormDescription(companyUser, text);
 		formDescriptionRepository.save(form);
 		List<FormDescription> forms = formDescriptionRepository.findAll();
 		Assert.assertEquals(forms.size(), 1);
-		Assert.assertEquals(forms.get(0).getUser(), user);
+		Assert.assertEquals(forms.get(0).getUser(), companyUser);
 
 		// Convert to PDF.
 		FormResult formResult = FormResult.fromJson(form.getJsonContent());
@@ -83,12 +68,12 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 		form = formDescriptionRepository.save(form);
 		Assert.assertEquals(forms.size(), 1);
 		Assert.assertNotNull(form.getPdfContent());
+
+		Assert.assertNotNull(formDescriptionRepository.findByUser(companyUser));
 	}
 
 	@Test
 	public void searchForm() {
-		Assert.assertNotNull(formDescriptionRepository.findByUser(user));
-
 		CompanyUser companyUser = new CompanyUser(USER_LOGIN + "_2", USER_PASSWORD + "_2", USER_EMAIL + "_2", USER_FIRSTNAME, USER_LASTNAME, COMPANY, FOLDER);
 		companyUser = userRepository.save(companyUser);
 		Assert.assertTrue(formDescriptionRepository.findByUser(companyUser).isEmpty());

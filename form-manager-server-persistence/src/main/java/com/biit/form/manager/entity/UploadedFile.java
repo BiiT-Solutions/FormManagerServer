@@ -12,23 +12,31 @@ import org.springframework.context.annotation.Primary;
 @Entity
 @Primary
 @Table(name = "uploaded_files")
-public class UploadedFile {
+public class UploadedFile extends StoredFile {
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	private FormDescription formDescription;
 
 	@Lob
-	@Column(name = "content", nullable = true, length = 1000000000)
+	@Column(name = "content", nullable = false, length = 1000000000)
 	private byte[] content;
+
+	@Column(name = "file_name", nullable = false)
+	private String fileName;
+
+	@Column(name = "category", nullable = false)
+	private String category;
 
 	private UploadedFile() {
 		super();
 	}
 
-	public UploadedFile(FormDescription formDescription, byte[] content) {
+	public UploadedFile(FormDescription formDescription, byte[] content, String category, String fileName) {
 		this();
 		setFormDescription(formDescription);
 		setContent(content);
+		setFileName(fileName);
+		setCategory(category);
 	}
 
 	public FormDescription getFormDescription() {
@@ -45,5 +53,21 @@ public class UploadedFile {
 
 	public void setContent(byte[] content) {
 		this.content = content;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 }

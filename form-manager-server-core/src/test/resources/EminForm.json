@@ -1,0 +1,606 @@
+{
+  "class": "com.biit.form.result.FormResult",
+  "comparationId": "6b0de7aa-4919-42a7-abd2-d01621e8121f",
+  "creationTime": "Dec 21, 2018 4:22:50 PM",
+  "updateTime": "Dec 21, 2018 4:22:50 PM",
+  "name": "form",
+  "label": "Emin Proyecto",
+  "updatedBy": 0,
+  "version": 1,
+  "organizationId": 61920,
+  "children": [
+    {
+      "class": "com.biit.form.result.CategoryResult",
+      "comparationId": "581c794a-4e52-4daf-95eb-01fb2ad0dce3",
+      "creationTime": "Dec 14, 2018 11:33:19 AM",
+      "updateTime": "Dec 21, 2018 3:42:21 PM",
+      "name": "developer",
+      "label": "Promotor",
+      "children": [
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "42fbcddc-6c40-4d98-83b4-5cc19b9b8701",
+          "creationTime": "Dec 14, 2018 11:33:57 AM",
+          "updateTime": "Dec 14, 2018 11:34:04 AM",
+          "name": "name",
+          "label": "Nombre",
+          "children": [],
+          "values": [
+            "Jorge"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "8b1c2edb-8c71-4538-bb41-f4adbd7f8fba",
+          "creationTime": "Dec 14, 2018 11:34:04 AM",
+          "updateTime": "Dec 14, 2018 11:34:23 AM",
+          "name": "user_id",
+          "label": "CIF",
+          "children": [],
+          "values": [
+            "478965A"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "288992e3-b2a6-48a0-a427-e6804f5d47e3",
+          "creationTime": "Dec 14, 2018 11:34:23 AM",
+          "updateTime": "Dec 14, 2018 11:34:42 AM",
+          "name": "email",
+          "label": "Email",
+          "children": [],
+          "values": [
+            "jorgehortelano@gmail.com"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "d29b8f12-c7be-4c38-b4f8-afb39c0c2938",
+          "creationTime": "Dec 14, 2018 11:34:40 AM",
+          "updateTime": "Dec 14, 2018 11:35:05 AM",
+          "name": "phone_number",
+          "label": "Teléfono",
+          "children": [],
+          "values": [
+            "+3596845"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "55294e0c-3599-4c79-bc9e-a52dcef076dd",
+          "creationTime": "Dec 14, 2018 11:35:05 AM",
+          "updateTime": "Dec 14, 2018 11:35:18 AM",
+          "name": "address",
+          "label": "Dirección",
+          "children": [],
+          "values": [
+            "calle"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "5911a186-2529-4dab-9024-74ca96fdcb8e",
+          "creationTime": "Dec 14, 2018 11:35:18 AM",
+          "updateTime": "Dec 14, 2018 11:35:28 AM",
+          "name": "city",
+          "label": "Ciudad",
+          "children": [],
+          "values": [
+            "cale"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "f258e252-7f22-43a1-85cb-f718d6d121df",
+          "creationTime": "Dec 14, 2018 11:35:28 AM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "region",
+          "label": "Provincia",
+          "children": [],
+          "values": [
+            "alava"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "6ae4dd3f-f6d5-4a7a-884b-8838bd5dafac",
+          "creationTime": "Dec 14, 2018 11:35:52 AM",
+          "updateTime": "Dec 14, 2018 12:34:08 PM",
+          "name": "postal_code",
+          "label": "Código postal",
+          "children": [],
+          "values": [
+            "5582a"
+          ]
+        }
+      ]
+    },
+    {
+      "class": "com.biit.form.result.CategoryResult",
+      "comparationId": "182e00bf-e070-4287-babc-169b246dd152",
+      "creationTime": "Dec 14, 2018 11:36:41 AM",
+      "updateTime": "Dec 21, 2018 3:42:21 PM",
+      "name": "project",
+      "label": "Proyecto",
+      "children": [
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "7695f865-ce89-4b38-bf69-5e616e7f4b2d",
+          "creationTime": "Dec 14, 2018 11:36:59 AM",
+          "updateTime": "Dec 20, 2018 10:32:23 AM",
+          "name": "project_name",
+          "label": "Nombre promoción",
+          "children": [],
+          "values": [
+            "prom"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "bb3c8d87-47af-43a5-a208-16dccea3753d",
+          "creationTime": "Dec 14, 2018 11:37:49 AM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "generation_type",
+          "label": "Tipo de generación",
+          "children": [],
+          "values": [
+            "biogas"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "ff0bf4aa-7467-4678-852e-af343ae0f8eb",
+          "creationTime": "Dec 14, 2018 11:39:54 AM",
+          "updateTime": "Dec 20, 2018 10:32:23 AM",
+          "name": "power",
+          "label": "Potencia (MWp)",
+          "children": [],
+          "values": [
+            "11"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "294724bf-ca55-46ab-b396-ca970f3243b3",
+          "creationTime": "Dec 14, 2018 11:40:31 AM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "site_region",
+          "label": "Emplazamiento (Provincia)",
+          "children": [],
+          "values": [
+            "albacete"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "95880180-ca8f-486a-8da4-d1b4bb868587",
+          "creationTime": "Dec 14, 2018 11:40:58 AM",
+          "updateTime": "Dec 20, 2018 10:32:23 AM",
+          "name": "site_city",
+          "label": "Emplazamiento (Municipio)",
+          "children": [],
+          "values": [
+            "1"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "e0d8c5c7-3b3b-479f-8d3b-6671fbb57b61",
+          "creationTime": "Dec 14, 2018 11:41:13 AM",
+          "updateTime": "Dec 20, 2018 10:32:23 AM",
+          "name": "site_area",
+          "label": "Emplazamiento (Polígono)",
+          "children": [],
+          "values": [
+            "111"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "38f9ac1e-fa20-4120-8b08-1f2764199438",
+          "creationTime": "Dec 14, 2018 11:41:51 AM",
+          "updateTime": "Dec 20, 2018 10:32:23 AM",
+          "name": "site_smallholding",
+          "label": "Emplazamiento (Parcela)",
+          "children": [],
+          "values": [
+            "111"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "bc394d2d-8dd5-4509-aa8c-e8024359fc9f",
+          "creationTime": "Dec 14, 2018 11:42:23 AM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "site_etrs89",
+          "label": "Emplazamiento (Huso ETRS89)",
+          "children": [],
+          "values": [
+            "30"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "23462705-c3a1-4ab3-b0f2-682cbb1a2634",
+          "creationTime": "Dec 14, 2018 11:43:44 AM",
+          "updateTime": "Dec 20, 2018 10:32:23 AM",
+          "name": "site_x",
+          "label": "Emplazamiento (Coordenada X)",
+          "children": [],
+          "values": [
+            "1111"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "2ba778ec-2643-4e24-9259-28f81390acfb",
+          "creationTime": "Dec 14, 2018 11:43:58 AM",
+          "updateTime": "Dec 20, 2018 10:33:16 AM",
+          "name": "site_y",
+          "label": "Emplazamiento (Coordenada Y)",
+          "children": [],
+          "values": [
+            "111"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "8c452855-6a0f-4e76-8508-a78403df214b",
+          "creationTime": "Dec 20, 2018 10:32:21 AM",
+          "updateTime": "Dec 20, 2018 2:07:49 PM",
+          "name": "attached_data",
+          "label": "Datos adjuntos",
+          "children": [],
+          "values": [
+            "pptp"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "226b6fb9-1441-4e8d-930a-b981a22163e4",
+          "creationTime": "Dec 14, 2018 11:44:52 AM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "project_status",
+          "label": "Estado del proyecto",
+          "children": [],
+          "values": [
+            "execution_project"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "a13b6fbd-b7cb-446c-b486-3f25d0c35add",
+          "creationTime": "Dec 20, 2018 10:23:14 AM",
+          "updateTime": "Dec 21, 2018 1:58:24 PM",
+          "name": "attached_files",
+          "label": "Archivos adjuntos",
+          "children": [],
+          "values": [
+            "Convert.sql"
+          ]
+        }
+      ]
+    },
+    {
+      "class": "com.biit.form.result.CategoryResult",
+      "comparationId": "2742de75-17c4-4b3f-833a-cc9a33b560f2",
+      "creationTime": "Dec 14, 2018 11:48:33 AM",
+      "updateTime": "Dec 21, 2018 3:42:21 PM",
+      "name": "guarantee",
+      "label": "Aval",
+      "children": [
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "69fafea7-60ce-4f3c-90a7-843bf3b28326",
+          "creationTime": "Dec 14, 2018 11:49:17 AM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "guarantee_deposit",
+          "label": "Aval depositado",
+          "children": [],
+          "values": [
+            "no"
+          ]
+        }
+      ]
+    },
+    {
+      "class": "com.biit.form.result.CategoryResult",
+      "comparationId": "8d701e2d-6698-42b5-88be-6edc07560b27",
+      "creationTime": "Dec 17, 2018 4:04:07 PM",
+      "updateTime": "Dec 21, 2018 3:42:21 PM",
+      "name": "ambient",
+      "label": "Ambiental",
+      "children": [
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "1538f739-c2fb-4882-b13d-684a67cf3522",
+          "creationTime": "Dec 17, 2018 4:04:30 PM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "ambient_process",
+          "label": "¿Ha realizado algún trámite medioambiental relacionado con el proyecto?",
+          "children": [],
+          "values": [
+            "no"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.RepeatableGroupResult",
+          "comparationId": "310b9a2a-6d06-476e-8ddf-b0b8f4d3b1d4",
+          "creationTime": "Dec 17, 2018 4:43:01 PM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "diagnosis",
+          "label": "Diagnóstico",
+          "repeatable": false,
+          "children": [
+            {
+              "class": "com.biit.form.result.QuestionWithValueResult",
+              "comparationId": "68865fb4-521c-4f63-a830-c5b1a1de6ce0",
+              "creationTime": "Dec 17, 2018 5:20:39 PM",
+              "updateTime": "Dec 17, 2018 5:21:12 PM",
+              "name": "info_diagnosis",
+              "label": "En caso de que no haya iniciad...",
+              "children": [],
+              "values": [
+                null
+              ]
+            },
+            {
+              "class": "com.biit.form.result.QuestionWithValueResult",
+              "comparationId": "e3e508d1-776c-4ec2-8100-65f7f4e2e861",
+              "creationTime": "Dec 17, 2018 4:51:05 PM",
+              "updateTime": "Dec 21, 2018 3:42:21 PM",
+              "name": "aspect",
+              "label": "Aspecto",
+              "children": [],
+              "values": [
+                "land_illness"
+              ]
+            },
+            {
+              "class": "com.biit.form.result.RepeatableGroupResult",
+              "comparationId": "a1122b9b-7a26-460f-822c-35f708db111c",
+              "creationTime": "Dec 17, 2018 5:02:25 PM",
+              "updateTime": "Dec 21, 2018 3:42:21 PM",
+              "name": "land_illness",
+              "label": "Afección a suelo forestal",
+              "repeatable": false,
+              "children": [
+                {
+                  "class": "com.biit.form.result.QuestionWithValueResult",
+                  "comparationId": "795bb630-a377-4d3d-8ade-282099496055",
+                  "creationTime": "Dec 17, 2018 5:02:54 PM",
+                  "updateTime": "Dec 21, 2018 3:42:21 PM",
+                  "name": "evaluated",
+                  "label": "Evaluado",
+                  "children": [],
+                  "values": [
+                    "no"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "class": "com.biit.form.result.CategoryResult",
+      "comparationId": "1829a890-5b2a-4a7c-8d63-e4e86f968d9a",
+      "creationTime": "Dec 17, 2018 5:19:11 PM",
+      "updateTime": "Dec 21, 2018 3:42:21 PM",
+      "name": "urban_planning",
+      "label": "Urbanismo",
+      "children": [
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "111a74e3-bd25-4f7a-ada7-4f5d44c8ccad",
+          "creationTime": "Dec 17, 2018 5:19:57 PM",
+          "updateTime": "Dec 18, 2018 5:11:52 PM",
+          "name": "info_urban",
+          "label": "¿En qué fase se encuentra la t...",
+          "children": [],
+          "values": [
+            null
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "ea226eb0-e26c-42bc-843b-9a37a4fb29d7",
+          "creationTime": "Dec 17, 2018 5:29:47 PM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "phase",
+          "label": "Fase",
+          "children": [],
+          "values": [
+            "not_started"
+          ]
+        }
+      ]
+    },
+    {
+      "class": "com.biit.form.result.CategoryResult",
+      "comparationId": "bc387e2b-2480-48cd-8108-417966580cbe",
+      "creationTime": "Dec 17, 2018 5:58:52 PM",
+      "updateTime": "Dec 21, 2018 3:42:21 PM",
+      "name": "authorizations",
+      "label": "Autorizaciones",
+      "children": [
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "341085e7-d4b5-4690-ab52-73bfb9d19f59",
+          "creationTime": "Dec 17, 2018 5:59:14 PM",
+          "updateTime": "Dec 18, 2018 5:11:56 PM",
+          "name": "authorizations_info",
+          "label": "¿En qué fase se encuentra la t...",
+          "children": [],
+          "values": [
+            null
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "ea6329bf-f5f3-496c-9b13-4092775caba6",
+          "creationTime": "Dec 18, 2018 5:11:57 PM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "phase",
+          "label": "Fase",
+          "children": [],
+          "values": [
+            "no_authorization"
+          ]
+        }
+      ]
+    },
+    {
+      "class": "com.biit.form.result.CategoryResult",
+      "comparationId": "59f6adc5-221a-49b5-b637-8a7087cd498a",
+      "creationTime": "Dec 18, 2018 5:19:26 PM",
+      "updateTime": "Dec 21, 2018 3:42:21 PM",
+      "name": "terrain",
+      "label": "Terrenos",
+      "children": [
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "015425e0-2e86-46f4-8631-8bc497ccbc51",
+          "creationTime": "Dec 18, 2018 5:19:45 PM",
+          "updateTime": "Dec 18, 2018 5:25:02 PM",
+          "name": "info_terrains",
+          "label": "Marque en qué régimen dispone ...",
+          "children": [],
+          "values": [
+            null
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "6b73b0a9-c299-4609-9fac-775473a09bac",
+          "creationTime": "Dec 18, 2018 5:20:14 PM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "terrain_availability",
+          "label": "Tipo de disponibilidad de terrenos",
+          "children": [],
+          "values": [
+            "property"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.RepeatableGroupResult",
+          "comparationId": "ad94e48e-9634-4f4a-b210-4dd3ccacc419",
+          "creationTime": "Dec 18, 2018 5:24:20 PM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "property",
+          "label": "En propiedad",
+          "repeatable": false,
+          "children": [
+            {
+              "class": "com.biit.form.result.QuestionWithValueResult",
+              "comparationId": "657226a6-2a69-410a-9bba-b016930d74bf",
+              "creationTime": "Dec 20, 2018 11:12:11 AM",
+              "updateTime": "Dec 21, 2018 2:06:47 PM",
+              "name": "attached_files",
+              "label": "Documentación aportada",
+              "children": [],
+              "values": [
+                "pptp"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "class": "com.biit.form.result.CategoryResult",
+      "comparationId": "af101357-fb9c-45eb-80e2-60593d80362c",
+      "creationTime": "Dec 17, 2018 4:10:03 PM",
+      "updateTime": "Dec 21, 2018 3:42:34 PM",
+      "name": "evacuation",
+      "label": "Evacuación",
+      "children": [
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "905c9fe3-88d7-4c95-b64f-703fed332335",
+          "creationTime": "Dec 17, 2018 4:10:18 PM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "evacuation_type",
+          "label": "Tipo de evacuación",
+          "children": [],
+          "values": [
+            "transport_network"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "5b4aa529-0b1b-418d-a1ad-054e09624d09",
+          "creationTime": "Dec 17, 2018 4:12:19 PM",
+          "updateTime": "Dec 20, 2018 10:43:29 AM",
+          "name": "network_name",
+          "label": "Nombre Nudo de la Red de Transporte",
+          "children": [],
+          "values": [
+            "11"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "7dedff40-db95-44e6-964d-48ecd1e71d4a",
+          "creationTime": "Dec 17, 2018 4:12:52 PM",
+          "updateTime": "Dec 21, 2018 2:08:37 PM",
+          "name": "evacuation_distance",
+          "label": "Distancia desde Generación a Evacuación",
+          "children": [],
+          "values": [
+            "11"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "4caa7c52-4100-42ac-9761-20ead1f8a1dc",
+          "creationTime": "Dec 17, 2018 4:14:39 PM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "etrs89_use",
+          "label": "Indicar Huso ETRS89",
+          "children": [],
+          "values": [
+            "31"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "8eca0659-1d7e-4e67-b514-a998e8b76bc2",
+          "creationTime": "Dec 20, 2018 10:42:37 AM",
+          "updateTime": "Dec 21, 2018 3:42:34 PM",
+          "name": "anexed_files",
+          "label": "Archivos Adjuntos",
+          "children": [],
+          "values": [
+            "Convert.sql"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "30eb8797-5da9-4646-a64b-8939af2e36cf",
+          "creationTime": "Dec 17, 2018 4:16:16 PM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "request",
+          "label": "¿Ha realizado la tramitación correspondiente a la solicitud de punto de acceso?",
+          "children": [],
+          "values": [
+            "no"
+          ]
+        },
+        {
+          "class": "com.biit.form.result.QuestionWithValueResult",
+          "comparationId": "16f5b723-b0bc-492f-b4f8-7c965a700447",
+          "creationTime": "Dec 17, 2018 4:16:37 PM",
+          "updateTime": "Dec 21, 2018 3:42:21 PM",
+          "name": "exists_answer",
+          "label": "¿Existe respuesta por parte del órgano competente?",
+          "children": [],
+          "values": [
+            "no"
+          ]
+        }
+      ]
+    }
+  ]
+}

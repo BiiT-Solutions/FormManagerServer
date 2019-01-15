@@ -5,11 +5,13 @@
 			<run>
 				<include name="authentication" />
 				<include name="userFactory" />
+				<include name="fileManager" />
 			</run>
 		</groups>
 		<classes>
 			<class name="com.biit.form.manager.security.AuthenticationServiceTest" />
 			<class name="com.biit.form.manager.users.UserFactoryTest" />
+			<class name="com.biit.form.manager.folders.FileManagerTest" />
 		</classes>
 	</test>
 </suite>
