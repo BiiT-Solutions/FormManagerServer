@@ -16,7 +16,6 @@ import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.form.manager.rest.exceptions.InternalServerException;
 import com.biit.form.manager.rest.exceptions.InvalidUserException;
 import com.biit.usermanager.entity.IUser;
-import com.biit.usermanager.entity.User;
 import com.biit.usermanager.security.IAuthenticationService;
 import com.biit.usermanager.security.exceptions.AuthenticationRequired;
 import com.biit.usermanager.security.exceptions.InvalidCredentialsException;
@@ -37,27 +36,15 @@ public class SecurityServices {
 	@ResponseStatus(HttpStatus.OK)
 	public IUser<Long> login(@ApiParam(value = "", required = true) @RequestBody(required = true) LoginForm loginForm) throws InvalidUserException,
 			InternalServerException {
-		// FormManagerLogger.info(this.getClass().getName(), "User " +
-		// loginForm.getUsername() + " succesfully logged in");
-		if (loginForm.getUsername().equals("admin")) {
-			FormManagerLogger.info(this.getClass().getName(), "User " + loginForm.getUsername() + " succesfully logged in");
-			User adminUser = new User();
-			adminUser.setLoginName("admin");
-			adminUser.setFirstName("admin");
-			FormManagerLogger.info(this.getClass().getName(), adminUser.toString());
-			return adminUser;
-			// return "{ \"user\": \"admin\", \"token\": \"wwwwwww\" }";
-		} else {
-			try {
-				return authenticationService.authenticate(loginForm.getUsername(), loginForm.getPassword());
-			} catch (UserManagementException | AuthenticationRequired e) {
-				FormManagerLogger.errorMessage(this.getClass().getName(), e);
-				throw new InternalServerException(e);
-			} catch (InvalidCredentialsException | UserDoesNotExistException e) {
-				FormManagerLogger.warning(this.getClass().getName(), "Invalid user '" + loginForm.getUsername() + "' with password '" + loginForm.getPassword()
-						+ "'.");
-				throw new InvalidUserException("Invalid user '" + loginForm.getUsername() + "' or password incorrect.", e);
-			}
+		try {
+			return authenticationService.authenticate(loginForm.getUsername(), loginForm.getPassword());
+		} catch (UserManagementException | AuthenticationRequired e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			throw new InternalServerException(e);
+		} catch (InvalidCredentialsException | UserDoesNotExistException e) {
+			FormManagerLogger.warning(this.getClass().getName(), "Invalid user '" + loginForm.getUsername() + "' with password '" + loginForm.getPassword()
+					+ "'.");
+			throw new InvalidUserException("Invalid user '" + loginForm.getUsername() + "' or password incorrect.", e);
 		}
 	}
 }

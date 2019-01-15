@@ -31,8 +31,9 @@ public class UserFactory {
 						throw new InvalidCsvFile("Line '" + Arrays.toString(userFields) + "' is not well formed.");
 					}
 					CompanyUser companyUser = new CompanyUser(userFields[UserCsvFields.USERNAME.getCsvIndex()].trim(),
-							userFields[UserCsvFields.PASSWORD.getCsvIndex()].trim(), createUniqueEmail(userFields[UserCsvFields.USERNAME.getCsvIndex()]), "",
-							"", userFields[UserCsvFields.COMPANY.getCsvIndex()].trim(), userFields[UserCsvFields.FOLDER.getCsvIndex()]);
+							userFields[UserCsvFields.PASSWORD.getCsvIndex()].trim(),
+							createUniqueEmail(userFields[UserCsvFields.USERNAME.getCsvIndex()]).trim(), "", "",
+							userFields[UserCsvFields.COMPANY.getCsvIndex()].trim(), userFields[UserCsvFields.FOLDER.getCsvIndex()]);
 					users.add(companyUser);
 				}
 			}
