@@ -3,8 +3,6 @@ package com.biit.form.manager.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -14,13 +12,9 @@ import org.springframework.context.annotation.Primary;
 @Entity
 @Primary
 @Table(name = "form_descriptions")
-public class FormDescription {
+public class FormDescription extends StoredFile {
 
-	@Id
-	@GeneratedValue
-	private Long id;
-
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	private CompanyUser user;
 
 	@Lob
@@ -32,17 +26,13 @@ public class FormDescription {
 	private byte[] pdfContent;
 
 	public FormDescription() {
-
+		super();
 	}
 
 	public FormDescription(CompanyUser user, String jsonContent) {
 		this();
 		setUser(user);
 		setJsonContent(jsonContent);
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public CompanyUser getUser() {
@@ -67,6 +57,11 @@ public class FormDescription {
 
 	public void setPdfContent(byte[] pdfContent) {
 		this.pdfContent = pdfContent;
+	}
+
+	@Override
+	public String toString() {
+		return "Form ('" + getId() + "', '" + getUser() + "')";
 	}
 
 }

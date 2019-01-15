@@ -39,4 +39,9 @@ public class CompanyUser extends User {
 	public void setFolder(String folder) {
 		this.folder = folder.trim();
 	}
+
+	@Override
+	public String toString() {
+		return getUniqueName();
+	}
 }

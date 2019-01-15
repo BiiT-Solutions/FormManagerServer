@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.biit.form.manager.entity.CompanyUser;
+import com.biit.form.manager.controller.IFormController;
 import com.biit.form.manager.entity.FormDescription;
+import com.biit.form.manager.folders.FileManager;
 import com.biit.form.manager.form.PdfConverter;
 import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.form.manager.repository.IFormDescriptionRepository;
@@ -28,7 +29,6 @@ import com.biit.form.manager.rest.exceptions.InvalidFormException;
 import com.biit.form.manager.rest.exceptions.InvalidUserException;
 import com.biit.form.manager.rest.exceptions.PdfNotGeneratedException;
 import com.biit.form.result.FormResult;
-import com.biit.form.result.pdf.FormAsPdf;
 import com.biit.form.result.pdf.exceptions.EmptyPdfBodyException;
 import com.biit.form.result.pdf.exceptions.InvalidElementException;
 import com.biit.usermanager.repository.IUserRepository;
@@ -44,6 +44,9 @@ public class FormServices {
 
 	@Autowired
 	private IFormDescriptionRepository formDescriptionRepository;
+
+	@Autowired
+	private IFormController formController;
 
 	@ApiOperation(value = "Basic method to save a form result from the formrunner.", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -72,7 +75,15 @@ public class FormServices {
 
 			// Store it on database.
 			try {
-				storeOnDatabase(submittedForm);
+				FormDescription formDescription = formController.storeOnDatabase(submittedForm);
+				FormManagerLogger.info(this.getClass().getName(), "Form '" + formDescription + "' stored correctly!.");
+
+				try {
+					formController.storePdfForm(formDescription, FileManager.pdfFilePath(formDescription));
+				} catch (IOException e) {
+					throw new PdfNotGeneratedException("Pdf File not stored into the folder.", e);
+				}
+
 			} catch (InvalidUserException | EmptyPdfBodyException | DocumentException | InvalidElementException e) {
 				throw new DatabaseException("Form has not been stored into the database", e);
 			}
@@ -87,27 +98,6 @@ public class FormServices {
 	private SubmittedForm parsePetition(String petition) throws JsonSyntaxException {
 		FormManagerLogger.debug(this.getClass().getName(), petition);
 		return new Gson().fromJson(petition, SubmittedForm.class);
-	}
-
-	private void storeOnDatabase(SubmittedForm submittedForm) throws InvalidUserException, EmptyPdfBodyException, DocumentException, InvalidElementException,
-			InvalidFormException {
-		// Get user.
-		CompanyUser user = (CompanyUser) userRepository.findByLoginName(submittedForm.getName());
-		if (user == null) {
-			throw new InvalidUserException("No user exists with login name '" + submittedForm.getName() + "'.");
-		}
-		// Store form
-		FormDescription formDescription = new FormDescription(user, submittedForm.getJson());
-
-		// Convert to PDF.
-		FormResult formResult = FormResult.fromJson(submittedForm.getJson());
-		if (formResult == null) {
-			throw new InvalidFormException("Structure invalid");
-		}
-		FormAsPdf pdfDocument = new FormAsPdf(formResult);
-		formDescription.setPdfContent(pdfDocument.generate());
-
-		formDescriptionRepository.save(formDescription);
 	}
 
 	@ApiOperation(value = "Method to upload a file received as a multipart request", notes = "")
