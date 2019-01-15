@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.biit.form.manager.entity.CompanyUser;
 import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.form.manager.rest.exceptions.InternalServerException;
 import com.biit.form.manager.rest.exceptions.InvalidUserException;
+import com.biit.usermanager.entity.IUser;
+import com.biit.usermanager.entity.User;
 import com.biit.usermanager.security.IAuthenticationService;
 import com.biit.usermanager.security.exceptions.AuthenticationRequired;
 import com.biit.usermanager.security.exceptions.InvalidCredentialsException;
@@ -34,13 +35,13 @@ public class SecurityServices {
 	@ApiOperation(value = "Basic method to check if the server is online.", notes = "")
 	@RequestMapping(value = "/security/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.OK)
-	public CompanyUser login(@ApiParam(value = "", required = true) @RequestBody(required = true) LoginForm loginForm) throws InvalidUserException,
+	public IUser<Long> login(@ApiParam(value = "", required = true) @RequestBody(required = true) LoginForm loginForm) throws InvalidUserException,
 			InternalServerException {
 		// FormManagerLogger.info(this.getClass().getName(), "User " +
 		// loginForm.getUsername() + " succesfully logged in");
 		if (loginForm.getUsername().equals("admin")) {
 			FormManagerLogger.info(this.getClass().getName(), "User " + loginForm.getUsername() + " succesfully logged in");
-			CompanyUser adminUser = new CompanyUser();
+			User adminUser = new User();
 			adminUser.setLoginName("admin");
 			adminUser.setFirstName("admin");
 			FormManagerLogger.info(this.getClass().getName(), adminUser.toString());
@@ -48,7 +49,7 @@ public class SecurityServices {
 			// return "{ \"user\": \"admin\", \"token\": \"wwwwwww\" }";
 		} else {
 			try {
-				authenticationService.authenticate(loginForm.getUsername(), loginForm.getPassword());
+				return authenticationService.authenticate(loginForm.getUsername(), loginForm.getPassword());
 			} catch (UserManagementException | AuthenticationRequired e) {
 				FormManagerLogger.errorMessage(this.getClass().getName(), e);
 				throw new InternalServerException(e);
@@ -57,7 +58,6 @@ public class SecurityServices {
 						+ "'.");
 				throw new InvalidUserException("Invalid user '" + loginForm.getUsername() + "' or password incorrect.", e);
 			}
-			throw new InvalidUserException("Invalid user '" + loginForm.getUsername() + "' or password incorrect.");
 		}
 	}
 }
