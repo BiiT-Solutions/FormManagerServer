@@ -55,7 +55,7 @@ public class UploadedFileRepositoryTest extends AbstractTransactionalTestNGSprin
 
 		// Load form from json file in resources.
 		String text = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource(FORM_AS_JSON).toURI())));
-		FormDescription form = new FormDescription(user, text);
+		FormDescription form = new FormDescription(user, text, "");
 		FormDescription formDescription = formDescriptionRepository.save(form);
 
 		UploadedFile uploadedFile = new UploadedFile(formDescription, FILE_CONTENT.getBytes(), CATEGORY_LABEL, FILE_NAME);

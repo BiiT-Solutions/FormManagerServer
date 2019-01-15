@@ -38,6 +38,8 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 
 	private final static String FORM_AS_JSON = "EminForm.json";
 
+	private final static String DOCUMENT = "12345";
+
 	@Autowired
 	private IUserRepository userRepository;
 
@@ -51,7 +53,7 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 
 		// Load form from json file in resources.
 		String text = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource(FORM_AS_JSON).toURI())));
-		FormDescription form = new FormDescription(companyUser, text);
+		FormDescription form = new FormDescription(companyUser, text, DOCUMENT);
 		formDescriptionRepository.save(form);
 		List<FormDescription> forms = formDescriptionRepository.findAll();
 		Assert.assertEquals(forms.size(), 1);
@@ -70,6 +72,9 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 		Assert.assertNotNull(form.getPdfContent());
 
 		Assert.assertNotNull(formDescriptionRepository.findByUser(companyUser));
+
+		// Search by document
+		Assert.assertNotNull(formDescriptionRepository.findByDocument(DOCUMENT));
 	}
 
 	@Test

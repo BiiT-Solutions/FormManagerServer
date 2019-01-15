@@ -20,11 +20,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.biit.form.manager.controller.IFormController;
 import com.biit.form.manager.entity.FormDescription;
+import com.biit.form.manager.entity.UploadedFile;
 import com.biit.form.manager.folders.FileManager;
 import com.biit.form.manager.form.PdfConverter;
 import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.form.manager.repository.IFormDescriptionRepository;
 import com.biit.form.manager.rest.exceptions.DatabaseException;
+import com.biit.form.manager.rest.exceptions.FileNotUploadedException;
 import com.biit.form.manager.rest.exceptions.InvalidFormException;
 import com.biit.form.manager.rest.exceptions.InvalidUserException;
 import com.biit.form.manager.rest.exceptions.PdfNotGeneratedException;
@@ -70,6 +72,7 @@ public class FormServices {
 				pdfContent = PdfConverter.convertToPdf(formResult);
 				FormManagerLogger.info(this.getClass().getName(), "PDF for '" + submittedForm.getDocument() + "' created correctly.");
 			} catch (EmptyPdfBodyException | DocumentException | InvalidElementException e) {
+				FormManagerLogger.errorMessage(this.getClass().getName(), e);
 				throw new PdfNotGeneratedException("Pdf creation error.", e);
 			}
 
@@ -85,12 +88,14 @@ public class FormServices {
 				}
 
 			} catch (InvalidUserException | EmptyPdfBodyException | DocumentException | InvalidElementException e) {
+				FormManagerLogger.errorMessage(this.getClass().getName(), e);
 				throw new DatabaseException("Form has not been stored into the database", e);
 			}
 
 			return pdfContent;
 
 		} catch (JsonSyntaxException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
 			throw new InvalidFormException("Structure invalid", e);
 		}
 	}
@@ -104,35 +109,23 @@ public class FormServices {
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping("/upload/{user}/formId/{formId}/category/{categoryLabel}")
 	// //new annotation since 4.3
-	public String fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @PathVariable("categoryLabel") String categoryLabel,
-			@RequestParam("file") MultipartFile file) {
-		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user " + user + " formId " + formId + " and category " + categoryLabel);
+	public void fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @PathVariable("categoryLabel") String categoryLabel,
+			@RequestParam("file") MultipartFile file) throws FileNotUploadedException {
+		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user '" + user + "', form '" + formId + "', category '" + categoryLabel
+				+ "', and file '" + file.getOriginalFilename() + "'.");
 		if (file.isEmpty()) {
-			// redirectAttributes.addFlashAttribute("message", "Please select a
-			// file to
-			// upload");
-			return "File is empty";
+			throw new FileNotUploadedException("File is empty!");
 		}
 		try {
 			// Get the file and save it somewhere
 			byte[] bytes = file.getBytes();
-			FormManagerLogger.info(this.getClass().getName(), "File " + file.getOriginalFilename());
-			// FormManagerLogger.info(this.getClass().getName(),
-			// "Files recieved"+ bytes);
-			// Path path = Paths.get(UPLOADED_FOLDER +
-			// file.getOriginalFilename());
-			// Files.write(path, bytes);
-
-			// redirectAttributes.addFlashAttribute("message",
-			// "You successfully uploaded '" + file.getOriginalFilename() +
-			// "'");
+			FormDescription formDescription = formDescriptionRepository.findByDocument(formId);
+			UploadedFile uploadFile = new UploadedFile(formDescription, bytes, categoryLabel, file.getOriginalFilename());
 
 		} catch (IOException e) {
-			FormManagerLogger.errorMessage(this.getClass().getName(), e.getMessage());
-			e.printStackTrace();
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			throw new FileNotUploadedException("Error uploading the file", e);
 		}
-
-		return "File received";
 	}
 
 }

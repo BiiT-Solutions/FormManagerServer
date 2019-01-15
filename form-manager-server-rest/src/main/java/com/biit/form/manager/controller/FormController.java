@@ -37,7 +37,7 @@ public class FormController implements IFormController {
 			throw new InvalidUserException("No user exists with login name '" + submittedForm.getName() + "'.");
 		}
 		// Store form
-		FormDescription formDescription = new FormDescription(user, submittedForm.getJson());
+		FormDescription formDescription = new FormDescription(user, submittedForm.getJson(), submittedForm.getDocument());
 
 		// Convert to PDF.
 		FormResult formResult = FormResult.fromJson(submittedForm.getJson());

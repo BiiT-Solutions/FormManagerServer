@@ -25,14 +25,18 @@ public class FormDescription extends StoredFile {
 	@Column(name = "pdf_content", nullable = true, length = 10000000)
 	private byte[] pdfContent;
 
+	@Column(name = "document", nullable = false)
+	private String document;
+
 	public FormDescription() {
 		super();
 	}
 
-	public FormDescription(CompanyUser user, String jsonContent) {
+	public FormDescription(CompanyUser user, String jsonContent, String document) {
 		this();
 		setUser(user);
 		setJsonContent(jsonContent);
+		setDocument(document);
 	}
 
 	public CompanyUser getUser() {
@@ -62,6 +66,14 @@ public class FormDescription extends StoredFile {
 	@Override
 	public String toString() {
 		return "Form ('" + getId() + "', '" + getUser() + "')";
+	}
+
+	public String getDocument() {
+		return document;
+	}
+
+	public void setDocument(String document) {
+		this.document = document;
 	}
 
 }

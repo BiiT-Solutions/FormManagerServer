@@ -36,6 +36,7 @@ public class FileManagerTest extends AbstractTransactionalTestNGSpringContextTes
 
 	private final static String COMPANY = "Emin";
 	private final static String FOLDER = "Folder";
+	private final static String DOCUMENT = "12345";
 
 	private final static String FORM_AS_JSON = "EminForm.json";
 
@@ -49,7 +50,7 @@ public class FileManagerTest extends AbstractTransactionalTestNGSpringContextTes
 	public void createEntities() throws IOException, URISyntaxException {
 		companyUser = new CompanyUser(USER_LOGIN, USER_PASSWORD, USER_EMAIL, USER_FIRSTNAME, USER_LASTNAME, COMPANY, FOLDER);
 		String text = new String(Files.readAllBytes(Paths.get(getClass().getClassLoader().getResource(FORM_AS_JSON).toURI())));
-		formDescription = new FormDescription(companyUser, text);
+		formDescription = new FormDescription(companyUser, text, DOCUMENT);
 		for (int i = 0; i < CATEGORY_LABELS.length; i++) {
 			uploadedFiles.add(new UploadedFile(formDescription, FILE_CONTENT.getBytes(), CATEGORY_LABELS[i], FILE_NAME));
 		}

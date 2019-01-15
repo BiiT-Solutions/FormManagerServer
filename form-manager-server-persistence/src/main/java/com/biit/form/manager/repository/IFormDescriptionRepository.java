@@ -14,4 +14,6 @@ import com.biit.form.manager.entity.FormDescription;
 public interface IFormDescriptionRepository extends JpaRepository<FormDescription, Long> {
 
 	List<FormDescription> findByUser(CompanyUser user);
+
+	FormDescription findByDocument(String document);
 }
