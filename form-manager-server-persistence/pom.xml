@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.biit</groupId>
 		<artifactId>form-manager-server</artifactId>
-		<version>0.0.48</version>
+		<version>0.0.49-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
