@@ -45,7 +45,7 @@ public class FolderManager {
 			path += File.separator;
 		}
 		FormManagerLogger.info("FolderManager", "Path to automatically create: " + path);
-		File outFile = new File(path);
+		File outFile = new File(path + "01.DOC.FILES/");
 		outFile.mkdirs();
 	}
 }
