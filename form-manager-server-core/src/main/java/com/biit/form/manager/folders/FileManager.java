@@ -22,7 +22,7 @@ public class FileManager {
 
 	public static String attachedFilesPath(UploadedFile uploadedFile) {
 		return FolderManager.getAttachedFilesRootPath(uploadedFile.getFormDescription().getUser()) + File.separator
-				+ FolderManager.getDocumentationFolder(uploadedFile) + File.separator; //+ uploadedFile.getFileName();
+				+ FolderManager.getDocumentationFolder(uploadedFile) + File.separator + uploadedFile.getFileName();
 	}
 
 }
