@@ -54,7 +54,7 @@ public class FormController implements IFormController {
 		if (formResult == null) {
 			throw new InvalidFormException("Structure invalid");
 		}
-		FormAsPdf pdfDocument = new FormAsPdf(formResult);
+		FormAsPdf pdfDocument = new FormAsPdf(formResult, user.getUniqueName());
 		formDescription.setPdfContent(pdfDocument.generate());
 		return formDescription;
 	}

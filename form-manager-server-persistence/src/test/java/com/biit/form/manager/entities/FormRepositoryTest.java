@@ -63,7 +63,7 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 		FormResult formResult = FormResult.fromJson(form.getJsonContent());
 		Assert.assertNotNull(formResult);
 
-		FormAsPdf pdfDocument = new FormAsPdf(formResult);
+		FormAsPdf pdfDocument = new FormAsPdf(formResult, "Footer");
 		form.setPdfContent(pdfDocument.generate());
 
 		// Update and include PDF.

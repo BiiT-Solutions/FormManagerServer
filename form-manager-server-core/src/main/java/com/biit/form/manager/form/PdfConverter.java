@@ -8,9 +8,9 @@ import com.lowagie.text.DocumentException;
 
 public class PdfConverter {
 
-	public static byte[] convertToPdf(FormResult formResult) throws EmptyPdfBodyException, DocumentException, InvalidElementException {
+	public static byte[] convertToPdf(FormResult formResult, String footer) throws EmptyPdfBodyException, DocumentException, InvalidElementException {
 		// Convert to pdf.
-		FormAsPdf pdfDocument = new FormAsPdf(formResult);
+		FormAsPdf pdfDocument = new FormAsPdf(formResult, footer);
 		return pdfDocument.generate();
 	}
 }

@@ -72,7 +72,7 @@ public class FormServices {
 			// Convert to PDF.
 			byte[] pdfContent;
 			try {
-				pdfContent = PdfConverter.convertToPdf(formResult);
+				pdfContent = PdfConverter.convertToPdf(formResult, submittedForm.getName());
 				FormManagerLogger.info(this.getClass().getName(), "PDF for '" + submittedForm.getDocument() + "' created correctly.");
 			} catch (EmptyPdfBodyException | DocumentException | InvalidElementException e) {
 				FormManagerLogger.errorMessage(this.getClass().getName(), e);
