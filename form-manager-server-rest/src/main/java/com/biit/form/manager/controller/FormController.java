@@ -12,6 +12,7 @@ import com.biit.form.manager.entity.FormDescription;
 import com.biit.form.manager.entity.UploadedFile;
 import com.biit.form.manager.folders.FileManager;
 import com.biit.form.manager.folders.FolderManager;
+import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.form.manager.repository.IFormDescriptionRepository;
 import com.biit.form.manager.repository.IUploadedFileRepository;
 import com.biit.form.manager.rest.SubmittedForm;
@@ -69,6 +70,7 @@ public class FormController implements IFormController {
 	@Override
 	public UploadedFile storeOnDatabase(byte[] bytes, String fileName, String formId, String categoryLabel) throws FileNotUploadedException {
 		UploadedFile uploadedFile = createUploadedFile(bytes, fileName, formId, categoryLabel);
+		FormManagerLogger.debug(this.getClass().getName(), "File '" + uploadedFile + "' obtained!.");
 		return uploadedFileRepository.save(uploadedFile);
 	}
 
@@ -76,6 +78,7 @@ public class FormController implements IFormController {
 	public FormDescription storeOnDatabase(SubmittedForm submittedForm) throws InvalidUserException, EmptyPdfBodyException, DocumentException,
 			InvalidElementException, InvalidFormException {
 		FormDescription formDescription = convert(submittedForm);
+		FormManagerLogger.debug(this.getClass().getName(), "Form description '" + formDescription + "' created!.");
 		return formDescriptionRepository.save(formDescription);
 	}
 
@@ -104,10 +107,12 @@ public class FormController implements IFormController {
 		if (uploadedFile == null || uploadedFile.getFormDescription() == null || uploadedFile.getFormDescription().getUser() == null) {
 			throw new FileNotFoundException("File not correctly defined.");
 		}
+		FormManagerLogger.info(this.getClass().getName(), "Storing '" + uploadedFile + "' in folder!.");
 		FolderManager.createDirectoryStructureIfNeeded(FolderManager.getAttachedFilesRootPath(uploadedFile.getFormDescription().getUser()));
 
 		// Store file
 		String path = FileManager.getDocumentationFolder(uploadedFile);
+		FormManagerLogger.info(this.getClass().getName(), "Storing '" + uploadedFile + "' in folder '" + path + "'.");
 		try (FileOutputStream fos = new FileOutputStream(path)) {
 			fos.write(uploadedFile.getContent());
 		}
