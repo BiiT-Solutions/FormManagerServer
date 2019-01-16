@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.biit.form.manager.configuration.FormManagerConfigurationReader;
 import com.biit.form.manager.entity.CompanyUser;
+import com.biit.form.manager.logger.FormManagerLogger;
 
 public class FolderManager {
 
@@ -16,6 +17,7 @@ public class FolderManager {
 	}
 
 	public static String getAttachedFilesRootPath(CompanyUser user) {
+		FormManagerLogger.info("FolderManager", "AttachedFilesRootPath: " + getUserPath(user) + File.separator + FormManagerConfigurationReader.getInstance().getAttachedFilesStoredFolder());
 		return getUserPath(user) + File.separator + FormManagerConfigurationReader.getInstance().getAttachedFilesStoredFolder();
 	}
 
