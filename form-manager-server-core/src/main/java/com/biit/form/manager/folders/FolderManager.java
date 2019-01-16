@@ -7,6 +7,7 @@ import com.biit.form.manager.configuration.FormManagerConfigurationReader;
 import com.biit.form.manager.entity.CompanyUser;
 import com.biit.form.manager.entity.FormDescription;
 import com.biit.form.manager.entity.UploadedFile;
+import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.form.result.FormResult;
 
 public class FolderManager {
@@ -43,6 +44,7 @@ public class FolderManager {
 		if (!path.endsWith(File.separator)) {
 			path += File.separator;
 		}
+		FormManagerLogger.info("FolderManager", "Path to automatically create: " + path);
 		File outFile = new File(path);
 		outFile.mkdirs();
 	}
