@@ -111,7 +111,7 @@ public class FormController implements IFormController {
 		FolderManager.createDirectoryStructureIfNeeded(FolderManager.getAttachedFilesRootPath(uploadedFile.getFormDescription().getUser()));
 
 		// Store file
-		String path = FileManager.getDocumentationFolder(uploadedFile);
+		String path = FileManager.attachedFilesPath(uploadedFile);
 		FormManagerLogger.info(this.getClass().getName(), "Storing '" + uploadedFile + "' in folder '" + path + "'.");
 		try (FileOutputStream fos = new FileOutputStream(path)) {
 			fos.write(uploadedFile.getContent());
