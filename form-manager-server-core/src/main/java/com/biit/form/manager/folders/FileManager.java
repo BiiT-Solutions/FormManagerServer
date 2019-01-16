@@ -21,7 +21,7 @@ public class FileManager {
 	}
 
 	public static String pdfFilePath(FormDescription formDescription) {
-		return FolderManager.getPdfFolderPath(formDescription.getUser()) + getPdfFileName(formDescription);
+		return FolderManager.getPdfFolderPath(formDescription.getUser()) +File.separator + getPdfFileName(formDescription);
 	}
 
 	private static int getCategoryIndex(FormDescription formDescription, String categoryLabel) {
