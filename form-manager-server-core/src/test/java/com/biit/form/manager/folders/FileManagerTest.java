@@ -60,7 +60,7 @@ public class FileManagerTest extends AbstractTransactionalTestNGSpringContextTes
 	@Test
 	public void checkCategoryFolder() {
 		for (int i = 0; i < CATEGORY_LABELS.length; i++) {
-			Assert.assertEquals(FileManager.getDocumentationFolder(uploadedFiles.get(i)), FINAL_FOLDERS[i]);
+			Assert.assertEquals(FolderManager.getDocumentationFolder(uploadedFiles.get(i)), FINAL_FOLDERS[i]);
 		}
 	}
 
