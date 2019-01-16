@@ -1,5 +1,6 @@
 package com.biit.form.manager.controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -108,7 +109,8 @@ public class FormController implements IFormController {
 			throw new FileNotFoundException("File not correctly defined.");
 		}
 		FormManagerLogger.info(this.getClass().getName(), "Storing '" + uploadedFile + "' in folder!.");
-		FolderManager.createDirectoryStructureIfNeeded(FolderManager.getAttachedFilesRootPath(uploadedFile.getFormDescription().getUser()));
+		FolderManager.createDirectoryStructureIfNeeded(FolderManager.getAttachedFilesRootPath(uploadedFile.getFormDescription().getUser()) + File.separator
+				+ FolderManager.getDocumentationFolder(uploadedFile));
 
 		// Store file
 		String path = FileManager.attachedFilesPath(uploadedFile);
