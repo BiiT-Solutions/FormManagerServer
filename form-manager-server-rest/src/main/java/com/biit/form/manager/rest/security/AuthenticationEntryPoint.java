@@ -11,6 +11,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+import com.biit.form.manager.logger.FormManagerLogger;
+
 @Component
 public class AuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
 
@@ -19,6 +21,7 @@ public class AuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
 		response.addHeader("WWW-Authenticate", "Basic realm=" + getRealmName());
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		PrintWriter writer = response.getWriter();
+		FormManagerLogger.warning(this.getClass().getName(), "Unauthorized user '" + request.getUserPrincipal().getName() + "'.");
 		writer.println("HTTP Status 401 - " + authException.getMessage());
 	}
 
