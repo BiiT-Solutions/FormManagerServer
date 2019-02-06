@@ -95,14 +95,7 @@ public class FormServices {
 				try {
 					// Store file on NAS
 					formController.storePdfForm(formDescription);
-					for (String email : FormManagerConfigurationReader.getInstance().getSendToEmails()) {
-						try {
-							SendEmail.sendEmail(email, "Formulario recibido por parte de '" + submittedForm.getName() + "'.",
-									"El usuario '" + submittedForm.getName() + "' ha enviado un formulario y este ha sido guardado con éxito.");
-						} catch (EmailNotSentException | InvalidEmailAddressException e) {
-							FormManagerLogger.errorMessage(this.getClass().getName(), e);
-						}
-					}
+					sendEmails(submittedForm.getName());
 					formDescription.setStoredInNas(true);
 					formDescriptionRepository.save(formDescription);
 					FormManagerLogger.info(this.getClass().getName(), "Form '" + formDescription + "' stored in NAS!.");
@@ -175,6 +168,7 @@ public class FormServices {
 			// Store file on NAS
 			try {
 				formController.storePdfForm(formDescription);
+				sendEmails(companyUser.getUniqueName());
 			} catch (IOException e) {
 				throw new PdfNotGeneratedException("Pdf File not stored into the folder.", e);
 			}
@@ -204,6 +198,7 @@ public class FormServices {
 			// Store file on NAS
 			try {
 				formController.storePdfForm(formDescription);
+				sendEmails(formDescription.getUser().getUniqueName());
 			} catch (IOException e) {
 				throw new PdfNotGeneratedException("Pdf File not stored into the folder.", e);
 			}
@@ -221,5 +216,16 @@ public class FormServices {
 			stringBuilder.append(formDescription.getUser().getUniqueName() + " (" + formDescription.getDocument() + "), ");
 		}
 		return stringBuilder.toString();
+	}
+
+	private void sendEmails(String userName) {
+		for (String email : FormManagerConfigurationReader.getInstance().getSendToEmails()) {
+			try {
+				SendEmail.sendEmail(email, "Formulario recibido por parte de '" + userName + "'.", "El usuario '" + userName
+						+ "' ha enviado un formulario y este ha sido guardado con éxito.");
+			} catch (EmailNotSentException | InvalidEmailAddressException e) {
+				FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			}
+		}
 	}
 }
