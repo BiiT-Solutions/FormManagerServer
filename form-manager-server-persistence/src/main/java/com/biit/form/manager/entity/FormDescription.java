@@ -28,6 +28,9 @@ public class FormDescription extends StoredFile {
 	@Column(name = "document", nullable = false)
 	private String document;
 
+	@Column(name = "stored_in_nas", nullable = false)
+	private boolean storedInNas = false;
+
 	public FormDescription() {
 		super();
 	}
@@ -74,6 +77,14 @@ public class FormDescription extends StoredFile {
 
 	public void setDocument(String document) {
 		this.document = document;
+	}
+
+	public boolean isStoredInNas() {
+		return storedInNas;
+	}
+
+	public void setStoredInNas(boolean storedInNas) {
+		this.storedInNas = storedInNas;
 	}
 
 }

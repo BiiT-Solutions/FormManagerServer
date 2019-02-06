@@ -1,7 +1,6 @@
 package com.biit.form.manager.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 import org.springframework.context.annotation.Primary;
 
@@ -9,7 +8,6 @@ import com.biit.usermanager.entity.User;
 
 @Entity
 @Primary
-@Table(name = "users")
 public class CompanyUser extends User {
 	private String company;
 	private String folder;

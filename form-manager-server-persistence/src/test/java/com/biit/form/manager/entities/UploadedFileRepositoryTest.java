@@ -65,5 +65,16 @@ public class UploadedFileRepositoryTest extends AbstractTransactionalTestNGSprin
 		Assert.assertEquals(uploadedFiles.size(), 1);
 		Assert.assertEquals(uploadedFiles.get(0).getFormDescription(), formDescription);
 		Assert.assertEquals(uploadedFiles.get(0).getCategory(), CATEGORY_LABEL);
+
+		uploadedFiles = uploadedFileRepository.findByFormDescription(formDescription);
+		Assert.assertEquals(uploadedFiles.size(), 1);
+		Assert.assertEquals(uploadedFiles.get(0).getFormDescription(), formDescription);
+		Assert.assertEquals(uploadedFiles.get(0).getCategory(), CATEGORY_LABEL);
+
+		FormDescription form2 = new FormDescription(user, text, "");
+		FormDescription formDescription2 = formDescriptionRepository.save(form2);
+		uploadedFiles = uploadedFileRepository.findByFormDescription(formDescription2);
+		Assert.assertEquals(uploadedFiles.size(), 0);
+
 	}
 }

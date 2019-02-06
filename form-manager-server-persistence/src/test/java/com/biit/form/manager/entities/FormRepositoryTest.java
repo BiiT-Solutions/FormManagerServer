@@ -75,6 +75,16 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 
 		// Search by document
 		Assert.assertNotNull(formDescriptionRepository.findByDocument(DOCUMENT));
+		
+		//Search by stored in NAS.
+		Assert.assertEquals(formDescriptionRepository.findByStoredInNas(true).size(), 0);
+		Assert.assertEquals(formDescriptionRepository.findByStoredInNas(false).size(), 1);
+		
+		form.setStoredInNas(true);
+		form = formDescriptionRepository.save(form);
+		
+		Assert.assertEquals(formDescriptionRepository.findByStoredInNas(true).size(), 1);
+		Assert.assertEquals(formDescriptionRepository.findByStoredInNas(false).size(), 0);
 	}
 
 	@Test

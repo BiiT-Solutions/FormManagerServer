@@ -4,10 +4,12 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.biit.form.manager.configuration.FormManagerConfigurationReader;
 import com.biit.form.manager.controller.IFormController;
+import com.biit.form.manager.entity.CompanyUser;
 import com.biit.form.manager.entity.FormDescription;
 import com.biit.form.manager.entity.UploadedFile;
 import com.biit.form.manager.form.PdfConverter;
@@ -30,9 +34,13 @@ import com.biit.form.manager.rest.exceptions.FileNotUploadedException;
 import com.biit.form.manager.rest.exceptions.InvalidFormException;
 import com.biit.form.manager.rest.exceptions.InvalidUserException;
 import com.biit.form.manager.rest.exceptions.PdfNotGeneratedException;
+import com.biit.form.manager.rest.exceptions.UserDoesNotExistsException;
 import com.biit.form.result.FormResult;
 import com.biit.form.result.pdf.exceptions.EmptyPdfBodyException;
 import com.biit.form.result.pdf.exceptions.InvalidElementException;
+import com.biit.logger.mail.SendEmail;
+import com.biit.logger.mail.exceptions.EmailNotSentException;
+import com.biit.logger.mail.exceptions.InvalidEmailAddressException;
 import com.biit.usermanager.repository.IUserRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -82,11 +90,23 @@ public class FormServices {
 			// Store it on database.
 			try {
 				FormDescription formDescription = formController.storeOnDatabase(submittedForm);
-				FormManagerLogger.info(this.getClass().getName(), "Form '" + formDescription + "' stored correctly!.");
+				formDescription.setStoredInNas(false);
+				FormManagerLogger.info(this.getClass().getName(), "Form '" + formDescription + "' stored in database correctly!.");
 
 				try {
 					// Store file on NAS
 					formController.storePdfForm(formDescription);
+					for (String email : FormManagerConfigurationReader.getInstance().getSendToEmails()) {
+						try {
+							SendEmail.sendEmail(email, "Formulario recibido por parte de '" + submittedForm.getName() + "'.",
+									"El usuario '" + submittedForm.getName() + "' ha enviado un formulario y este ha sido guardado con éxito.");
+						} catch (EmailNotSentException | InvalidEmailAddressException e) {
+							FormManagerLogger.errorMessage(this.getClass().getName(), e);
+						}
+					}
+					formDescription.setStoredInNas(true);
+					formDescriptionRepository.save(formDescription);
+					FormManagerLogger.info(this.getClass().getName(), "Form '" + formDescription + "' stored in NAS!.");
 				} catch (IOException e) {
 					throw new PdfNotGeneratedException("Pdf File not stored into the folder.", e);
 				}
@@ -100,7 +120,7 @@ public class FormServices {
 
 		} catch (JsonSyntaxException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);
-			throw new InvalidFormException("Structure invalid", e);
+			throw new InvalidFormException("Structure invalidformDescriptionRepository", e);
 		}
 	}
 
@@ -112,7 +132,6 @@ public class FormServices {
 	@ApiOperation(value = "Method to upload a file received as a multipart request", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping("/upload/{user}/formId/{formId}/category/{categoryLabel}")
-	// //new annotation since 4.3
 	public void fileUpload(@PathVariable("user") String user, @PathVariable("formId") String formId, @PathVariable("categoryLabel") String categoryLabel,
 			@RequestParam("file") MultipartFile file) throws FileNotUploadedException, InvalidFormException, DatabaseException {
 		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user '" + user + "', form '" + formId + "', category '" + categoryLabel
@@ -128,6 +147,12 @@ public class FormServices {
 				// Store file on NAS
 				formController.storeUploadedFile(uploadedFile);
 			} catch (IOException e) {
+				// Set as not stored.
+				FormDescription formDescription = formDescriptionRepository.findByDocument(uploadedFile.getFileName());
+				if (formDescription != null) {
+					formDescription.setStoredInNas(false);
+					formDescriptionRepository.save(formDescription);
+				}
 				throw new FileNotUploadedException("Attached File '" + uploadedFile + "' not stored into the folder.", e);
 			}
 
@@ -137,4 +162,65 @@ public class FormServices {
 		}
 	}
 
+	@ApiOperation(value = "Method to force the storage on the NAS for one user.", notes = "")
+	@ResponseStatus(value = HttpStatus.OK)
+	@PostMapping("/forms/nas/{user}")
+	public void storeInNas(@PathVariable("user") String user) throws UserDoesNotExistsException, PdfNotGeneratedException, FileNotUploadedException {
+		CompanyUser companyUser = (CompanyUser) userRepository.findByLoginName(user);
+		if (companyUser == null) {
+			throw new UserDoesNotExistsException("No user exists with login name '" + companyUser + "'.");
+		}
+
+		List<FormDescription> formDescriptions = formDescriptionRepository.findByUser(companyUser);
+		for (FormDescription formDescription : formDescriptions) {
+			// Store file on NAS
+			try {
+				formController.storePdfForm(formDescription);
+			} catch (IOException e) {
+				throw new PdfNotGeneratedException("Pdf File not stored into the folder.", e);
+			}
+
+			for (UploadedFile uploadedFile : uploadedFileRepository.findByFormDescription(formDescription)) {
+				try {
+					// Store file on NAS
+					formController.storeUploadedFile(uploadedFile);
+				} catch (IOException e) {
+					throw new FileNotUploadedException("Attached File '" + uploadedFile + "' not stored into the folder.", e);
+				}
+			}
+
+			formDescription.setStoredInNas(true);
+			formDescriptionRepository.save(formDescription);
+
+		}
+	}
+
+	@ApiOperation(value = "Method to force the storage of all missing forms in the NAS.", notes = "")
+	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/forms/nas", method = RequestMethod.POST, produces = "text/plain")
+	public String storeInNas() throws UserDoesNotExistsException, PdfNotGeneratedException, FileNotUploadedException {
+		StringBuilder stringBuilder = new StringBuilder();
+		List<FormDescription> formDescriptions = formDescriptionRepository.findByStoredInNas(false);
+		for (FormDescription formDescription : formDescriptions) {
+			// Store file on NAS
+			try {
+				formController.storePdfForm(formDescription);
+			} catch (IOException e) {
+				throw new PdfNotGeneratedException("Pdf File not stored into the folder.", e);
+			}
+
+			for (UploadedFile uploadedFile : uploadedFileRepository.findByFormDescription(formDescription)) {
+				try {
+					// Store file on NAS
+					formController.storeUploadedFile(uploadedFile);
+				} catch (IOException e) {
+					throw new FileNotUploadedException("Attached File '" + uploadedFile + "' not stored into the folder.", e);
+				}
+			}
+			formDescription.setStoredInNas(true);
+			formDescriptionRepository.save(formDescription);
+			stringBuilder.append(formDescription.getUser().getUniqueName() + " (" + formDescription.getDocument() + "), ");
+		}
+		return stringBuilder.toString();
+	}
 }

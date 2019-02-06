@@ -16,4 +16,6 @@ public interface IFormDescriptionRepository extends JpaRepository<FormDescriptio
 	List<FormDescription> findByUser(CompanyUser user);
 
 	FormDescription findByDocument(String document);
+
+	List<FormDescription> findByStoredInNas(boolean storedInNas);
 }
