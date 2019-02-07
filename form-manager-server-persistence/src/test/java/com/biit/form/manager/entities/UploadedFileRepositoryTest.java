@@ -76,5 +76,8 @@ public class UploadedFileRepositoryTest extends AbstractTransactionalTestNGSprin
 		uploadedFiles = uploadedFileRepository.findByFormDescription(formDescription2);
 		Assert.assertEquals(uploadedFiles.size(), 0);
 
+		uploadedFileRepository.deleteByFormDescription(formDescription);
+		Assert.assertEquals(uploadedFileRepository.findAll().size(), 0);
+
 	}
 }

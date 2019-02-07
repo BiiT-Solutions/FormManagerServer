@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -152,6 +153,26 @@ public class FormServices {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);
 			throw new DatabaseException("Form has not been stored into the database", e);
 		}
+	}
+
+	@ApiOperation(value = "Method to delete a form from database", notes = "")
+	@ResponseStatus(value = HttpStatus.OK)
+	@DeleteMapping("/forms/{formId}")
+	public void deleteForm(@PathVariable("formId") String formId) throws InvalidFormException {
+		try {
+			Long id = Long.parseLong(formId);
+
+			FormDescription formDescription = formDescriptionRepository.getOne(id);
+			if (formDescription == null) {
+				throw new InvalidFormException("No form exists with id '" + formId + "'.");
+			}
+
+			uploadedFileRepository.deleteByFormDescription(formDescription);
+			formDescriptionRepository.delete(formDescription);
+		} catch (NumberFormatException nfe) {
+			throw new InvalidFormException("Invalid id '" + formId + "'.");
+		}
+
 	}
 
 	@ApiOperation(value = "Method to force the storage on the NAS for one user.", notes = "")

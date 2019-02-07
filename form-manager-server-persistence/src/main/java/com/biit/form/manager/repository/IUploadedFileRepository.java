@@ -14,4 +14,6 @@ import com.biit.form.manager.entity.UploadedFile;
 public interface IUploadedFileRepository extends JpaRepository<UploadedFile, Long> {
 
 	List<UploadedFile> findByFormDescription(FormDescription formDescription);
+	
+	List<UploadedFile> deleteByFormDescription(FormDescription formDescription);
 }
