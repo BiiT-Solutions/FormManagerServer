@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.biit.form.manager.entity.CompanyUser;
 import com.biit.form.manager.entity.FormDescription;
 import com.biit.form.manager.entity.UploadedFile;
 import com.biit.form.manager.form.PdfConverter;
+import com.biit.form.manager.form.XlsConverter;
 import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.form.manager.repository.IFormDescriptionRepository;
 import com.biit.form.manager.repository.IUploadedFileRepository;
@@ -35,9 +37,11 @@ import com.biit.form.manager.rest.exceptions.InvalidFormException;
 import com.biit.form.manager.rest.exceptions.InvalidUserException;
 import com.biit.form.manager.rest.exceptions.PdfNotGeneratedException;
 import com.biit.form.manager.rest.exceptions.UserDoesNotExistsException;
+import com.biit.form.manager.rest.exceptions.XlsNotGeneratedException;
 import com.biit.form.result.FormResult;
 import com.biit.form.result.pdf.exceptions.EmptyPdfBodyException;
 import com.biit.form.result.pdf.exceptions.InvalidElementException;
+import com.biit.form.result.xls.exceptions.InvalidXlsElementException;
 import com.biit.logger.mail.SendEmail;
 import com.biit.logger.mail.exceptions.EmailNotSentException;
 import com.biit.logger.mail.exceptions.InvalidEmailAddressException;
@@ -64,7 +68,7 @@ public class FormServices {
 	@ApiOperation(value = "Basic method to save a form result from the formrunner.", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/forms", method = RequestMethod.POST, produces = MediaType.APPLICATION_PDF_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public byte[] saveFormResult(@ApiParam(value = "Form result", required = true) @RequestBody(required = true) String body) throws InvalidFormException,
+	public byte[] saveFormResultAsPdf(@ApiParam(value = "Form result", required = true) @RequestBody(required = true) String body) throws InvalidFormException,
 			PdfNotGeneratedException, DatabaseException {
 		FormManagerLogger.info(this.getClass().getName(), "Form posted.");
 		try {
@@ -107,6 +111,36 @@ public class FormServices {
 			} catch (InvalidUserException | EmptyPdfBodyException | DocumentException | InvalidElementException e) {
 				FormManagerLogger.errorMessage(this.getClass().getName(), e);
 				throw new DatabaseException("Form has not been stored into the database", e);
+			}
+
+			return pdfContent;
+
+		} catch (JsonSyntaxException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			throw new InvalidFormException("Structure invalidformDescriptionRepository", e);
+		}
+	}
+
+	@ApiOperation(value = "Gets forms as a XLS file", notes = "")
+	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/forms", method = RequestMethod.GET, produces = "application/xls;charset=UTF-8")
+	public byte[] getFormResultAsXls() throws InvalidFormException, XlsNotGeneratedException {
+		FormManagerLogger.info(this.getClass().getName(), "Retrieving XLS forms.");
+		try {
+			List<FormDescription> formDescriptions = formDescriptionRepository.findAll();
+			List<FormResult> formResults = new ArrayList<>();
+			for (FormDescription formDescription : formDescriptions) {
+				formResults.add(FormResult.fromJson(formDescription.getJsonContent()));
+			}
+
+			// Convert to PDF.
+			byte[] pdfContent;
+			try {
+				pdfContent = XlsConverter.convertToXls(formResults);
+				FormManagerLogger.info(this.getClass().getName(), "XLS for '" + formDescriptions.size() + "' forms created correctly.");
+			} catch (InvalidXlsElementException e) {
+				FormManagerLogger.errorMessage(this.getClass().getName(), e);
+				throw new XlsNotGeneratedException("Xls creation error.", e);
 			}
 
 			return pdfContent;
