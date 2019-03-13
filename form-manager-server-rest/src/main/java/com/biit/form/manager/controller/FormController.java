@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.biit.form.manager.configuration.FormManagerConfigurationReader;
 import com.biit.form.manager.entity.CompanyUser;
 import com.biit.form.manager.entity.FormDescription;
 import com.biit.form.manager.entity.UploadedFile;
@@ -84,39 +85,43 @@ public class FormController implements IFormController {
 	}
 
 	@Override
-	public void storePdfForm(FormDescription formDescription) throws FileNotFoundException, IOException {
-		// Create directories
-		if (formDescription == null || formDescription.getUser() == null) {
-			throw new FileNotFoundException("File not correctly defined.");
-		}
-		FolderManager.createDirectoryStructureIfNeeded(FolderManager.getPdfFolderPath(formDescription.getUser()));
+	public void storePdfFormInFolder(FormDescription formDescription) throws FileNotFoundException, IOException {
+		if (FormManagerConfigurationReader.getInstance().isStoredInNasEnabled()) {
+			// Create directories
+			if (formDescription == null || formDescription.getUser() == null) {
+				throw new FileNotFoundException("File not correctly defined.");
+			}
+			FolderManager.createDirectoryStructureIfNeeded(FolderManager.getPdfFolderPath(formDescription.getUser()));
 
-		// Store file
-		String path = FileManager.pdfFilePath(formDescription);
-		if (!path.endsWith(".pdf")) {
-			path += ".pdf";
-		}
+			// Store file
+			String path = FileManager.pdfFilePath(formDescription);
+			if (!path.endsWith(".pdf")) {
+				path += ".pdf";
+			}
 
-		try (FileOutputStream fos = new FileOutputStream(path)) {
-			fos.write(formDescription.getPdfContent());
+			try (FileOutputStream fos = new FileOutputStream(path)) {
+				fos.write(formDescription.getPdfContent());
+			}
 		}
 	}
 
 	@Override
-	public void storeUploadedFile(UploadedFile uploadedFile) throws FileNotFoundException, IOException {
-		// Create directories
-		if (uploadedFile == null || uploadedFile.getFormDescription() == null || uploadedFile.getFormDescription().getUser() == null) {
-			throw new FileNotFoundException("File not correctly defined.");
-		}
-		FormManagerLogger.info(this.getClass().getName(), "Storing '" + uploadedFile + "' in folder!.");
-		FolderManager.createDirectoryStructureIfNeeded(FolderManager.getAttachedFilesRootPath(uploadedFile.getFormDescription().getUser()) + File.separator
-				+ FolderManager.getDocumentationFolder(uploadedFile));
+	public void storeUploadedFileInFolder(UploadedFile uploadedFile) throws FileNotFoundException, IOException {
+		if (FormManagerConfigurationReader.getInstance().isStoredInNasEnabled()) {
+			// Create directories
+			if (uploadedFile == null || uploadedFile.getFormDescription() == null || uploadedFile.getFormDescription().getUser() == null) {
+				throw new FileNotFoundException("File not correctly defined.");
+			}
+			FormManagerLogger.info(this.getClass().getName(), "Storing '" + uploadedFile + "' in folder!.");
+			FolderManager.createDirectoryStructureIfNeeded(FolderManager.getAttachedFilesRootPath(uploadedFile.getFormDescription().getUser()) + File.separator
+					+ FolderManager.getDocumentationFolder(uploadedFile));
 
-		// Store file
-		String path = FileManager.attachedFilesPath(uploadedFile);
-		FormManagerLogger.info(this.getClass().getName(), "Storing '" + uploadedFile + "' in folder '" + path + "'.");
-		try (FileOutputStream fos = new FileOutputStream(path)) {
-			fos.write(uploadedFile.getContent());
+			// Store file
+			String path = FileManager.attachedFilesPath(uploadedFile);
+			FormManagerLogger.info(this.getClass().getName(), "Storing '" + uploadedFile + "' in folder '" + path + "'.");
+			try (FileOutputStream fos = new FileOutputStream(path)) {
+				fos.write(uploadedFile.getContent());
+			}
 		}
 	}
 

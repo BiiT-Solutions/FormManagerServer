@@ -21,12 +21,12 @@ public interface IFormController {
 	FormDescription storeOnDatabase(SubmittedForm submittedForm) throws InvalidUserException, EmptyPdfBodyException, DocumentException,
 			InvalidElementException, InvalidFormException;
 
-	void storePdfForm(FormDescription formDescription) throws FileNotFoundException, IOException;
+	void storePdfFormInFolder(FormDescription formDescription) throws FileNotFoundException, IOException;
 
 	UploadedFile createUploadedFile(byte[] bytes, String fileName, String formId, String categoryLabel) throws FileNotUploadedException;
 
 	UploadedFile storeOnDatabase(byte[] bytes, String fileName, String formId, String categoryLabel) throws FileNotUploadedException;
 
-	void storeUploadedFile(UploadedFile uploadedFile) throws FileNotFoundException, IOException;
+	void storeUploadedFileInFolder(UploadedFile uploadedFile) throws FileNotFoundException, IOException;
 
 }

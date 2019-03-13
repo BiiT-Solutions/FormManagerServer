@@ -105,7 +105,7 @@ public class FormServices {
 
 				try {
 					// Store file on NAS
-					formController.storePdfForm(formDescription);
+					formController.storePdfFormInFolder(formDescription);
 					sendEmails(submittedForm.getName());
 					formDescription.setStoredInNas(true);
 					formDescriptionRepository.save(formDescription);
@@ -187,7 +187,7 @@ public class FormServices {
 
 			try {
 				// Store file on NAS
-				formController.storeUploadedFile(uploadedFile);
+				formController.storeUploadedFileInFolder(uploadedFile);
 			} catch (IOException e) {
 				// Set as not stored.
 				FormDescription formDescription = formDescriptionRepository.findByDocument(uploadedFile.getFileName());
@@ -237,7 +237,7 @@ public class FormServices {
 		for (FormDescription formDescription : formDescriptions) {
 			// Store file on NAS
 			try {
-				formController.storePdfForm(formDescription);
+				formController.storePdfFormInFolder(formDescription);
 				sendEmails(companyUser.getUniqueName());
 			} catch (IOException e) {
 				throw new PdfNotGeneratedException("Pdf File not stored into the folder.", e);
@@ -246,7 +246,7 @@ public class FormServices {
 			for (UploadedFile uploadedFile : uploadedFileRepository.findByFormDescription(formDescription)) {
 				try {
 					// Store file on NAS
-					formController.storeUploadedFile(uploadedFile);
+					formController.storeUploadedFileInFolder(uploadedFile);
 				} catch (IOException e) {
 					throw new FileNotUploadedException("Attached File '" + uploadedFile + "' not stored into the folder.", e);
 				}
@@ -267,7 +267,7 @@ public class FormServices {
 		for (FormDescription formDescription : formDescriptions) {
 			// Store file on NAS
 			try {
-				formController.storePdfForm(formDescription);
+				formController.storePdfFormInFolder(formDescription);
 				sendEmails(formDescription.getUser().getUniqueName());
 			} catch (IOException e) {
 				throw new PdfNotGeneratedException("Pdf File not stored into the folder.", e);
@@ -276,7 +276,7 @@ public class FormServices {
 			for (UploadedFile uploadedFile : uploadedFileRepository.findByFormDescription(formDescription)) {
 				try {
 					// Store file on NAS
-					formController.storeUploadedFile(uploadedFile);
+					formController.storeUploadedFileInFolder(uploadedFile);
 				} catch (IOException e) {
 					throw new FileNotUploadedException("Attached File '" + uploadedFile + "' not stored into the folder.", e);
 				}
