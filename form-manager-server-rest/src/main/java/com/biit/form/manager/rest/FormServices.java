@@ -138,9 +138,6 @@ public class FormServices {
 		} catch (InvalidXlsElementException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);
 			throw new XlsNotGeneratedException("Xls creation error.", e);
-		} catch (JsonSyntaxException e) {
-			FormManagerLogger.errorMessage(this.getClass().getName(), e);
-			throw new InvalidFormException("Structure invalid!", e);
 		}
 	}
 
