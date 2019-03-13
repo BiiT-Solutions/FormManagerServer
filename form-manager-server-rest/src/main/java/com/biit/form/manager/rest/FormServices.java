@@ -123,20 +123,22 @@ public class FormServices {
 
 	@ApiOperation(value = "Gets forms as a XLS file", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
-	@RequestMapping(value = "/forms", method = RequestMethod.GET, produces = "application/xls;charset=UTF-8")
+	@RequestMapping(value = "/forms/xls", method = RequestMethod.GET, produces = "application/xls;charset=UTF-8")
 	public byte[] getFormResultAsXls() throws InvalidFormException, XlsNotGeneratedException {
 		FormManagerLogger.info(this.getClass().getName(), "Retrieving XLS forms.");
 		try {
 			List<FormDescription> formDescriptions = formDescriptionRepository.findAll();
 			List<FormResult> formResults = new ArrayList<>();
+			List<String> formHeaders = new ArrayList<>();
 			for (FormDescription formDescription : formDescriptions) {
 				formResults.add(FormResult.fromJson(formDescription.getJsonContent()));
+				formHeaders.add(formDescription.getUser().getLoginName());
 			}
 
 			// Convert to PDF.
 			byte[] pdfContent;
 			try {
-				pdfContent = XlsConverter.convertToXls(formResults);
+				pdfContent = XlsConverter.convertToXls(formResults, formHeaders);
 				FormManagerLogger.info(this.getClass().getName(), "XLS for '" + formDescriptions.size() + "' forms created correctly.");
 			} catch (InvalidXlsElementException e) {
 				FormManagerLogger.errorMessage(this.getClass().getName(), e);

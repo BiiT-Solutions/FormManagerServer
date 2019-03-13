@@ -8,9 +8,9 @@ import com.biit.form.result.xls.exceptions.InvalidXlsElementException;
 
 public class XlsConverter {
 
-	public static byte[] convertToXls(List<FormResult> formResults) throws InvalidXlsElementException {
+	public static byte[] convertToXls(List<FormResult> formResults, List<String> formHeaders) throws InvalidXlsElementException {
 		// Convert to pdf.
-		FormsAsXls xlsDocument = new FormsAsXls(formResults);
+		FormsAsXls xlsDocument = new FormsAsXls(formResults, formHeaders);
 		return xlsDocument.generate();
 	}
 }
