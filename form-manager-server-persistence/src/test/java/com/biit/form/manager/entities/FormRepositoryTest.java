@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,14 +76,18 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 
 		// Search by document
 		Assert.assertNotNull(formDescriptionRepository.findByDocument(DOCUMENT));
-		
-		//Search by stored in NAS.
+
+		// Search by stored in NAS.
 		Assert.assertEquals(formDescriptionRepository.findByStoredInNas(true).size(), 0);
 		Assert.assertEquals(formDescriptionRepository.findByStoredInNas(false).size(), 1);
-		
+
+		// Search by creationTime
+		Assert.assertEquals(formDescriptionRepository.findByCreationTimeGreaterThan(new Timestamp(System.currentTimeMillis() + 10000)).size(), 0);
+		Assert.assertEquals(formDescriptionRepository.findByCreationTimeGreaterThan(new Timestamp(System.currentTimeMillis() - 10000)).size(), 1);
+
 		form.setStoredInNas(true);
 		form = formDescriptionRepository.save(form);
-		
+
 		Assert.assertEquals(formDescriptionRepository.findByStoredInNas(true).size(), 1);
 		Assert.assertEquals(formDescriptionRepository.findByStoredInNas(false).size(), 0);
 	}

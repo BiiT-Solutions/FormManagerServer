@@ -1,5 +1,6 @@
 package com.biit.form.manager.repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,8 @@ import com.biit.form.manager.entity.FormDescription;
 public interface IFormDescriptionRepository extends JpaRepository<FormDescription, Long> {
 
 	List<FormDescription> findByUser(CompanyUser user);
+
+	List<FormDescription> findByCreationTimeGreaterThan(Timestamp creationTime);
 
 	FormDescription findByDocument(String document);
 

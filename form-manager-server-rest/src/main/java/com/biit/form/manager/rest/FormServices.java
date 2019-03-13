@@ -4,7 +4,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,7 @@ import com.biit.form.manager.repository.IUploadedFileRepository;
 import com.biit.form.manager.rest.exceptions.DatabaseException;
 import com.biit.form.manager.rest.exceptions.FileNotUploadedException;
 import com.biit.form.manager.rest.exceptions.InvalidFormException;
+import com.biit.form.manager.rest.exceptions.InvalidInputDataException;
 import com.biit.form.manager.rest.exceptions.InvalidUserException;
 import com.biit.form.manager.rest.exceptions.PdfNotGeneratedException;
 import com.biit.form.manager.rest.exceptions.UserDoesNotExistsException;
@@ -52,6 +57,7 @@ import com.lowagie.text.DocumentException;
 
 @RestController
 public class FormServices {
+	private final static String DATE_FORMAT = "yyyy-MM-dd";
 
 	@Autowired
 	private IUserRepository userRepository;
@@ -128,28 +134,35 @@ public class FormServices {
 		FormManagerLogger.info(this.getClass().getName(), "Retrieving XLS forms.");
 		try {
 			List<FormDescription> formDescriptions = formDescriptionRepository.findAll();
-			List<FormResult> formResults = new ArrayList<>();
-			List<String> formHeaders = new ArrayList<>();
-			for (FormDescription formDescription : formDescriptions) {
-				formResults.add(FormResult.fromJson(formDescription.getJsonContent()));
-				formHeaders.add(formDescription.getUser().getLoginName());
-			}
-
-			// Convert to PDF.
-			byte[] pdfContent;
-			try {
-				pdfContent = XlsConverter.convertToXls(formResults, formHeaders);
-				FormManagerLogger.info(this.getClass().getName(), "XLS for '" + formDescriptions.size() + "' forms created correctly.");
-			} catch (InvalidXlsElementException e) {
-				FormManagerLogger.errorMessage(this.getClass().getName(), e);
-				throw new XlsNotGeneratedException("Xls creation error.", e);
-			}
-
-			return pdfContent;
-
+			return XlsConverter.convertToXls(formDescriptions);
+		} catch (InvalidXlsElementException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			throw new XlsNotGeneratedException("Xls creation error.", e);
 		} catch (JsonSyntaxException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);
-			throw new InvalidFormException("Structure invalidformDescriptionRepository", e);
+			throw new InvalidFormException("Structure invalid!", e);
+		}
+	}
+
+	@ApiOperation(value = "Gets forms as a XLS file", notes = "Obtained from a starting date as 'yyyy-mm-dd'")
+	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/forms/xls/from/{date}", method = RequestMethod.GET, produces = "application/xls;charset=UTF-8")
+	public byte[] getFormResultAsXls(@PathVariable("date") String dateQuery) throws InvalidFormException, XlsNotGeneratedException, InvalidInputDataException {
+		FormManagerLogger.info(this.getClass().getName(), "Retrieving XLS forms.");
+		try {
+			DateFormat format = new SimpleDateFormat(DATE_FORMAT);
+			Date date = format.parse(dateQuery);
+			List<FormDescription> formDescriptions = formDescriptionRepository.findByCreationTimeGreaterThan(new Timestamp(date.getTime()));
+			return XlsConverter.convertToXls(formDescriptions);
+		} catch (InvalidXlsElementException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			throw new XlsNotGeneratedException("Xls creation error.", e);
+		} catch (JsonSyntaxException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			throw new InvalidFormException("Structure invalid!", e);
+		} catch (ParseException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			throw new InvalidInputDataException("Date '" + dateQuery + "' is invalid. User format '" + DATE_FORMAT + "'", e);
 		}
 	}
 
