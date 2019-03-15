@@ -41,6 +41,7 @@ import com.biit.form.manager.rest.exceptions.FileNotUploadedException;
 import com.biit.form.manager.rest.exceptions.InvalidFormException;
 import com.biit.form.manager.rest.exceptions.InvalidInputDataException;
 import com.biit.form.manager.rest.exceptions.InvalidUserException;
+import com.biit.form.manager.rest.exceptions.NoDataException;
 import com.biit.form.manager.rest.exceptions.PdfNotGeneratedException;
 import com.biit.form.manager.rest.exceptions.UserDoesNotExistsException;
 import com.biit.form.manager.rest.exceptions.XlsNotGeneratedException;
@@ -145,13 +146,17 @@ public class FormServices {
 	@ApiOperation(value = "Gets forms as a XLS file", notes = "Obtained from a starting date as 'yyyy-mm-dd'")
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/forms/xls/from/{date}", method = RequestMethod.GET, produces = "application/xls;charset=UTF-8")
-	public byte[] getFormResultAsXls(@PathVariable("date") String dateQuery) throws InvalidFormException, XlsNotGeneratedException, InvalidInputDataException {
+	public byte[] getFormResultAsXls(@PathVariable("date") String dateQuery) throws InvalidFormException, XlsNotGeneratedException, InvalidInputDataException,
+			NoDataException {
 		FormManagerLogger.info(this.getClass().getName(), "Retrieving XLS forms.");
 		try {
 			DateFormat format = new SimpleDateFormat(DATE_FORMAT);
 			Date date = format.parse(dateQuery);
 			List<FormDescription> formDescriptions = formDescriptionRepository
 					.findByCreationTimeGreaterThanOrderByCreationTimeAsc(new Timestamp(date.getTime()));
+			if (formDescriptions.isEmpty()) {
+				throw new NoDataException("No forms found in this date ranges.");
+			}
 			return XlsConverter.convertToXls(formDescriptions);
 		} catch (InvalidXlsElementException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);
@@ -169,7 +174,7 @@ public class FormServices {
 	@ResponseStatus(value = HttpStatus.OK)
 	@RequestMapping(value = "/forms/xls/from/{startdate}/to/{enddate}", method = RequestMethod.GET, produces = "application/xls;charset=UTF-8")
 	public byte[] getFormResultAsXls(@PathVariable("startdate") String startdate, @PathVariable("enddate") String enddate) throws InvalidFormException,
-			XlsNotGeneratedException, InvalidInputDataException {
+			XlsNotGeneratedException, InvalidInputDataException, NoDataException {
 		FormManagerLogger.info(this.getClass().getName(), "Retrieving XLS forms.");
 		try {
 			DateFormat format = new SimpleDateFormat(DATE_FORMAT);
@@ -194,6 +199,9 @@ public class FormServices {
 			}
 			List<FormDescription> formDescriptions = formDescriptionRepository.findByCreationTimeBetweenOrderByCreationTimeAsc(
 					new Timestamp(dateStart.getTime()), new Timestamp(dateEnd.getTime()));
+			if (formDescriptions.isEmpty()) {
+				throw new NoDataException("No forms found in this date ranges.");
+			}
 			return XlsConverter.convertToXls(formDescriptions);
 		} catch (InvalidXlsElementException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);
