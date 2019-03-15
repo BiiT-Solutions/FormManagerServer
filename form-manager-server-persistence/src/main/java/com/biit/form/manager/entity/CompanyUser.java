@@ -35,7 +35,11 @@ public class CompanyUser extends User {
 	}
 
 	public void setFolder(String folder) {
-		this.folder = folder.trim();
+		if (folder != null) {
+			this.folder = folder.trim();
+		} else {
+			this.folder = null;
+		}
 	}
 
 	@Override

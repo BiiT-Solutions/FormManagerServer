@@ -59,7 +59,6 @@ import com.lowagie.text.DocumentException;
 @RestController
 public class FormServices {
 	private final static String DATE_FORMAT = "yyyy-MM-dd";
-	private final static int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
 
 	@Autowired
 	private IUserRepository userRepository;
