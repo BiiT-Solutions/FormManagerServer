@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -58,6 +59,7 @@ import com.lowagie.text.DocumentException;
 @RestController
 public class FormServices {
 	private final static String DATE_FORMAT = "yyyy-MM-dd";
+	private final static int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
 
 	@Autowired
 	private IUserRepository userRepository;
@@ -149,7 +151,8 @@ public class FormServices {
 		try {
 			DateFormat format = new SimpleDateFormat(DATE_FORMAT);
 			Date date = format.parse(dateQuery);
-			List<FormDescription> formDescriptions = formDescriptionRepository.findByCreationTimeGreaterThan(new Timestamp(date.getTime()));
+			List<FormDescription> formDescriptions = formDescriptionRepository
+					.findByCreationTimeGreaterThanOrderByCreationTimeAsc(new Timestamp(date.getTime()));
 			return XlsConverter.convertToXls(formDescriptions);
 		} catch (InvalidXlsElementException e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);
@@ -161,6 +164,46 @@ public class FormServices {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);
 			throw new InvalidInputDataException("Date '" + dateQuery + "' is invalid. User format '" + DATE_FORMAT + "'", e);
 		}
+	}
+
+	@ApiOperation(value = "Gets forms as a XLS file in a date range", notes = "Obtained from a starting date as 'yyyy-mm-dd'")
+	@ResponseStatus(value = HttpStatus.OK)
+	@RequestMapping(value = "/forms/xls/from/{startdate}/to/{enddate}", method = RequestMethod.GET, produces = "application/xls;charset=UTF-8")
+	public byte[] getFormResultAsXls(@PathVariable("startdate") String startdate, @PathVariable("enddate") String enddate) throws InvalidFormException,
+			XlsNotGeneratedException, InvalidInputDataException {
+		FormManagerLogger.info(this.getClass().getName(), "Retrieving XLS forms.");
+		try {
+			DateFormat format = new SimpleDateFormat(DATE_FORMAT);
+			Date dateStart, dateEnd;
+			try {
+				dateStart = format.parse(startdate);
+			} catch (ParseException e) {
+				FormManagerLogger.errorMessage(this.getClass().getName(), e);
+				throw new InvalidInputDataException("Date '" + startdate + "' is invalid. User format '" + DATE_FORMAT + "'", e);
+			}
+			try {
+				dateEnd = format.parse(enddate);
+				// Set time to the end of day
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(dateEnd);
+				calendar.set(Calendar.HOUR_OF_DAY, 23);
+				calendar.set(Calendar.MINUTE, 59);
+				dateEnd = calendar.getTime();
+			} catch (ParseException e) {
+				FormManagerLogger.errorMessage(this.getClass().getName(), e);
+				throw new InvalidInputDataException("Date '" + enddate + "' is invalid. User format '" + DATE_FORMAT + "'", e);
+			}
+			List<FormDescription> formDescriptions = formDescriptionRepository.findByCreationTimeBetweenOrderByCreationTimeAsc(
+					new Timestamp(dateStart.getTime()), new Timestamp(dateEnd.getTime()));
+			return XlsConverter.convertToXls(formDescriptions);
+		} catch (InvalidXlsElementException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			throw new XlsNotGeneratedException("Xls creation error.", e);
+		} catch (JsonSyntaxException e) {
+			FormManagerLogger.errorMessage(this.getClass().getName(), e);
+			throw new InvalidFormException("Structure invalid!", e);
+		}
+
 	}
 
 	private SubmittedForm parsePetition(String petition) throws JsonSyntaxException {

@@ -82,8 +82,20 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 		Assert.assertEquals(formDescriptionRepository.findByStoredInNas(false).size(), 1);
 
 		// Search by creationTime
-		Assert.assertEquals(formDescriptionRepository.findByCreationTimeGreaterThan(new Timestamp(System.currentTimeMillis() + 10000)).size(), 0);
-		Assert.assertEquals(formDescriptionRepository.findByCreationTimeGreaterThan(new Timestamp(System.currentTimeMillis() - 10000)).size(), 1);
+		Assert.assertEquals(formDescriptionRepository.findByCreationTimeGreaterThanOrderByCreationTimeAsc(new Timestamp(System.currentTimeMillis() + 10000))
+				.size(), 0);
+		Assert.assertEquals(formDescriptionRepository.findByCreationTimeGreaterThanOrderByCreationTimeAsc(new Timestamp(System.currentTimeMillis() - 10000))
+				.size(), 1);
+
+		Assert.assertEquals(
+				formDescriptionRepository.findByCreationTimeBetweenOrderByCreationTimeAsc(new Timestamp(System.currentTimeMillis() + 10000),
+						new Timestamp(System.currentTimeMillis() + 10000)).size(), 0);
+		Assert.assertEquals(
+				formDescriptionRepository.findByCreationTimeBetweenOrderByCreationTimeAsc(new Timestamp(System.currentTimeMillis() + 10000),
+						new Timestamp(System.currentTimeMillis() - 10000)).size(), 0);
+		Assert.assertEquals(
+				formDescriptionRepository.findByCreationTimeBetweenOrderByCreationTimeAsc(new Timestamp(System.currentTimeMillis() - 10000),
+						new Timestamp(System.currentTimeMillis() + 10000)).size(), 1);
 
 		form.setStoredInNas(true);
 		form = formDescriptionRepository.save(form);

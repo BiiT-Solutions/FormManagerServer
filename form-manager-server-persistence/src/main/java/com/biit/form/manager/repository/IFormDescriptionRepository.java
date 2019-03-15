@@ -16,7 +16,9 @@ public interface IFormDescriptionRepository extends JpaRepository<FormDescriptio
 
 	List<FormDescription> findByUser(CompanyUser user);
 
-	List<FormDescription> findByCreationTimeGreaterThan(Timestamp creationTime);
+	List<FormDescription> findByCreationTimeGreaterThanOrderByCreationTimeAsc(Timestamp creationTime);
+
+	List<FormDescription> findByCreationTimeBetweenOrderByCreationTimeAsc(Timestamp startTime, Timestamp endTime);
 
 	FormDescription findByDocument(String document);
 
