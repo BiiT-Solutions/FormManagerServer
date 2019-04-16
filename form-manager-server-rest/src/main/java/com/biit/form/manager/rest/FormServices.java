@@ -273,7 +273,7 @@ public class FormServices {
 
 	@ApiOperation(value = "Method to force the storage of all files on the NAS for one user.", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
-	@PostMapping("/forms/nas/{user}")
+	@PostMapping("/forms/nas/user/{user:.+}")
 	public void storeInNas(@PathVariable("user") String user) throws UserDoesNotExistsException, PdfNotGeneratedException, FileNotUploadedException {
 		CompanyUser companyUser = (CompanyUser) userRepository.findByLoginName(user);
 		if (companyUser == null) {
@@ -308,7 +308,7 @@ public class FormServices {
 
 	@ApiOperation(value = "Method to force the storage of all files on the NAS for one user id.", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
-	@PostMapping("/forms/nas/user/{user_id}")
+	@PostMapping("/forms/nas/user/id/{user_id}")
 	public void storeInNasWithId(@PathVariable("user_id") Long id) throws UserDoesNotExistsException, PdfNotGeneratedException, FileNotUploadedException {
 		CompanyUser companyUser = (CompanyUser) userRepository.findOne(id);
 		if (companyUser == null) {
