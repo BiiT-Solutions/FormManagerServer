@@ -225,9 +225,9 @@ public class FormServices {
 			@RequestParam("file") MultipartFile file) throws FileNotUploadedException, InvalidFormException, DatabaseException {
 		FormManagerLogger.info(this.getClass().getName(), "Recieving file for user '" + user + "', form '" + formId + "', category '" + categoryLabel
 				+ "', and file '" + file.getOriginalFilename() + "'.");
-		if (file.isEmpty()) {
-			throw new FileNotUploadedException("File is empty!");
-		}
+		// if (file.isEmpty()) {
+		// throw new FileNotUploadedException("File is empty!");
+		// }
 		try {
 			// Store it on database.
 			UploadedFile uploadedFile = formController.storeOnDatabase(file.getBytes(), file.getOriginalFilename(), formId, categoryLabel);
