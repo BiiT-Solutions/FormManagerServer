@@ -237,7 +237,7 @@ public class FormServices {
 				formController.storeUploadedFileInFolder(uploadedFile);
 			} catch (IOException e) {
 				// Set as not stored.
-				FormDescription formDescription = formDescriptionRepository.findByDocument(uploadedFile.getFileName());
+				FormDescription formDescription = formDescriptionRepository.findTopByDocumentOrderByCreationTimeDesc(uploadedFile.getFileName());
 				if (formDescription != null) {
 					formDescription.setStoredInNas(false);
 					formDescriptionRepository.save(formDescription);

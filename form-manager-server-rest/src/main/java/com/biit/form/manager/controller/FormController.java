@@ -68,7 +68,7 @@ public class FormController implements IFormController {
 
 	@Override
 	public UploadedFile createUploadedFile(byte[] bytes, String fileName, String formId, String categoryLabel) throws FileNotUploadedException {
-		FormDescription formDescription = formDescriptionRepository.findByDocument(formId);
+		FormDescription formDescription = formDescriptionRepository.findTopByDocumentOrderByCreationTimeDesc(formId);
 		if (formDescription == null) {
 			throw new FileNotUploadedException("Form '" + formId + "' does not exists");
 		}

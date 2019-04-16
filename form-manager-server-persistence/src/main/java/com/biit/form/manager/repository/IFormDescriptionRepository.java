@@ -20,7 +20,9 @@ public interface IFormDescriptionRepository extends JpaRepository<FormDescriptio
 
 	List<FormDescription> findByCreationTimeBetweenOrderByCreationTimeAsc(Timestamp startTime, Timestamp endTime);
 
-	FormDescription findByDocument(String document);
+	FormDescription findTopByDocumentOrderByCreationTimeDesc(String document);
+	
+	//findFirst1ByOrderByCreationTimeDesc
 
 	List<FormDescription> findByStoredInNas(boolean storedInNas);
 }

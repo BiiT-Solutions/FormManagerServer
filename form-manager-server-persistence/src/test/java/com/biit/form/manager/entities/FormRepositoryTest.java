@@ -75,7 +75,7 @@ public class FormRepositoryTest extends AbstractTransactionalTestNGSpringContext
 		Assert.assertNotNull(formDescriptionRepository.findByUser(companyUser));
 
 		// Search by document
-		Assert.assertNotNull(formDescriptionRepository.findByDocument(DOCUMENT));
+		Assert.assertNotNull(formDescriptionRepository.findTopByDocumentOrderByCreationTimeDesc(DOCUMENT));
 
 		// Search by stored in NAS.
 		Assert.assertEquals(formDescriptionRepository.findByStoredInNas(true).size(), 0);
