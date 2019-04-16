@@ -271,13 +271,49 @@ public class FormServices {
 
 	}
 
-	@ApiOperation(value = "Method to force the storage on the NAS for one user.", notes = "")
+	@ApiOperation(value = "Method to force the storage of all files on the NAS for one user.", notes = "")
 	@ResponseStatus(value = HttpStatus.OK)
 	@PostMapping("/forms/nas/{user}")
 	public void storeInNas(@PathVariable("user") String user) throws UserDoesNotExistsException, PdfNotGeneratedException, FileNotUploadedException {
 		CompanyUser companyUser = (CompanyUser) userRepository.findByLoginName(user);
 		if (companyUser == null) {
-			throw new UserDoesNotExistsException("No user exists with login name '" + companyUser + "'.");
+			FormManagerLogger.warning(this.getClass().getName(), "No user exists with login name '" + user + "'.");
+			throw new UserDoesNotExistsException("No user exists with login name '" + user + "'.");
+		}
+
+		List<FormDescription> formDescriptions = formDescriptionRepository.findByUser(companyUser);
+		for (FormDescription formDescription : formDescriptions) {
+			// Store file on NAS
+			try {
+				formController.storePdfFormInFolder(formDescription);
+				sendEmails(companyUser.getUniqueName());
+			} catch (IOException e) {
+				throw new PdfNotGeneratedException("Pdf File not stored into the folder.", e);
+			}
+
+			for (UploadedFile uploadedFile : uploadedFileRepository.findByFormDescription(formDescription)) {
+				try {
+					// Store file on NAS
+					formController.storeUploadedFileInFolder(uploadedFile);
+				} catch (IOException e) {
+					throw new FileNotUploadedException("Attached File '" + uploadedFile + "' not stored into the folder.", e);
+				}
+			}
+
+			formDescription.setStoredInNas(true);
+			formDescriptionRepository.save(formDescription);
+
+		}
+	}
+
+	@ApiOperation(value = "Method to force the storage of all files on the NAS for one user id.", notes = "")
+	@ResponseStatus(value = HttpStatus.OK)
+	@PostMapping("/forms/nas/user/{user_id}")
+	public void storeInNasWithId(@PathVariable("user_id") Long id) throws UserDoesNotExistsException, PdfNotGeneratedException, FileNotUploadedException {
+		CompanyUser companyUser = (CompanyUser) userRepository.findOne(id);
+		if (companyUser == null) {
+			FormManagerLogger.warning(this.getClass().getName(), "No user exists with id '" + id + "'.");
+			throw new UserDoesNotExistsException("No user exists with id '" + id + "'.");
 		}
 
 		List<FormDescription> formDescriptions = formDescriptionRepository.findByUser(companyUser);
