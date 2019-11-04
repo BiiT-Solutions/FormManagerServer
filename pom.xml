@@ -69,7 +69,7 @@
 		<springfox-swagger.version>2.9.2</springfox-swagger.version>
 		<opencsv.version>4.4</opencsv.version>
 		<!-- BiiT Dependencies -->
-		<biit-common-utils.version>[0.4,0.5)</biit-common-utils.version>
+		<biit-common-utils.version>[1.0,1.1)</biit-common-utils.version>
 		<rest-generic-client.version>[0.0,0.1)</rest-generic-client.version>
 		<user-manager-database.version>[0.0,0.1)</user-manager-database.version>
 		<form-result-pdf.version>[0.1,0.2)</form-result-pdf.version>
