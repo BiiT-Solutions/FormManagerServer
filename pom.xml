@@ -38,7 +38,7 @@
 
 	<scm>
 		<connection>scm:git:git.biit-solutions.com:BiiT/FormManagerServer.git</connection>
-		<connection>scm:git:git.biit-solutions.com:BiiT/FormManagerServer.git</developerConnection>
+		<developerConnection>scm:git:git.biit-solutions.com:BiiT/FormManagerServer.git</developerConnection>
 		<tag>FormManagerServer</tag>
 	</scm>
 
