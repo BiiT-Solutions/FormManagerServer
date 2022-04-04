@@ -19,21 +19,18 @@
 		<dependency>
 			<groupId>com.biit</groupId>
 			<artifactId>form-result-pdf</artifactId>
-			<version>${form-result-pdf.version}</version>
 		</dependency>
 
 		<!-- Security -->
 		<dependency>
 			<groupId>com.biit</groupId>
 			<artifactId>user-manager-database</artifactId>
-			<version>${user-manager-database.version}</version>
 		</dependency>
 
 		<!-- File access and logger -->
 		<dependency>
 			<groupId>com.biit</groupId>
 			<artifactId>common-utils</artifactId>
-			<version>${biit-common-utils.version}</version>
 		</dependency>
 
 		<dependency>
@@ -45,11 +42,6 @@
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency>
-		<!-- Add Log4j2 Dependency -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
 
 		<dependency>

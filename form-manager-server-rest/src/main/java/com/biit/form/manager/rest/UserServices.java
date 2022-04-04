@@ -1,5 +1,6 @@
 package com.biit.form.manager.rest;
 
+import com.biit.form.manager.repository.ICompanyUserRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -18,7 +19,6 @@ import com.biit.form.manager.logger.FormManagerLogger;
 import com.biit.form.manager.rest.exceptions.InvalidUserException;
 import com.biit.form.manager.users.InvalidCsvFile;
 import com.biit.form.manager.users.UserFactory;
-import com.biit.usermanager.repository.IUserRepository;
 
 /**
  * Rest services for checking authorizations, permissions and logins.
@@ -27,7 +27,7 @@ import com.biit.usermanager.repository.IUserRepository;
 public class UserServices {
 
 	@Autowired
-	private IUserRepository userRepository;
+	private ICompanyUserRepository companyUserRepository;
 
 	@ApiOperation(value = "Basic method to add a new user to the database.", notes = "Only one user can be added.")
 	@RequestMapping(value = "/user/add", method = RequestMethod.POST)
@@ -41,7 +41,7 @@ public class UserServices {
 	@ResponseStatus(HttpStatus.OK)
 	public void importUsers(@ApiParam(value = "CSV file", required = true) @RequestBody(required = true) String requestBody) throws InvalidUserException {
 		try {
-			List<CompanyUser> companyUsers = userRepository.save(UserFactory.createUsersFromCSV(requestBody));
+			List<CompanyUser> companyUsers = companyUserRepository.saveAll(UserFactory.createUsersFromCSV(requestBody));
 			FormManagerLogger.info(this.getClass().getName(), "Added '" + companyUsers.size() + "' users to the database.");
 		} catch (InvalidCsvFile e) {
 			FormManagerLogger.errorMessage(this.getClass().getName(), e);

@@ -15,7 +15,6 @@
 		<dependency>
 			<groupId>com.biit</groupId>
 			<artifactId>common-utils</artifactId>
-			<version>${biit-common-utils.version}</version>
 		</dependency>
 	</dependencies>
 

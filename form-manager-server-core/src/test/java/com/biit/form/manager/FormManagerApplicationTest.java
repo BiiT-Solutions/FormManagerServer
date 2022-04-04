@@ -7,12 +7,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({ "com.biit.form.manager", "com.biit.usermanager" })
-@EnableJpaRepositories("com.biit.usermanager.repository")
-@EntityScan({ "com.biit.usermanager.entity", "com.biit.form.manager.entity" })
+@ComponentScan({"com.biit.form.manager", "com.biit.usermanager"})
+@EnableJpaRepositories({"com.biit.usermanager.repository", "com.biit.form.manager.repository"})
+@EntityScan({"com.biit.usermanager.entity", "com.biit.form.manager.entity"})
 public class FormManagerApplicationTest {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FormManagerApplicationTest.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(FormManagerApplicationTest.class, args);
+    }
 }

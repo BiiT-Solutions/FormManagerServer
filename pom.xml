@@ -9,10 +9,10 @@
 	<name>Form Manager Server</name>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.18.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>com.biit</groupId>
+		<artifactId>versions</artifactId>
+		<version>[0.1,0.2)</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<modules>
@@ -21,60 +21,26 @@
 		<module>form-manager-server-core</module>
 		<module>form-manager-server-rest</module>
 	</modules>
-	
-	
+
+
 	<distributionManagement>
 		<repository>
 			<id>central</id>
 			<name>libs-releases</name>
-			<url>https://dev.biit-solutions.com/artifactory/libs-release</url>
+			<url>https://artifactory.biit-solutions.com/artifactory/libs-release</url>
 		</repository>
 		<snapshotRepository>
 			<id>snapshots</id>
 			<name>libs-snapshot</name>
-			<url>https://dev.biit-solutions.com/artifactory/libs-snapshot</url>
+			<url>https://artifactory.biit-solutions.com/artifactory/libs-snapshot</url>
 		</snapshotRepository>
 	</distributionManagement>
 
 	<scm>
-		<connection>scm:git:git.biit-solutions.com:FormManagerServer.git</connection>
-		<developerConnection>scm:git:git.biit-solutions.com:FormManagerServer.git</developerConnection>
+		<connection>scm:git:git.biit-solutions.com:BiiT/FormManagerServer.git</connection>
+		<developerConnection>scm:git:git.biit-solutions.com:BiiT/FormManagerServer.git</developerConnection>
 		<tag>FormManagerServer</tag>
 	</scm>
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
-		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
-		<maven-surefire.version>2.17</maven-surefire.version>
-		<org.testng.version>6.8.13</org.testng.version>
-		<log4j.version>1.2.17</log4j.version>
-		<maven-release-plugin.version>2.5.1</maven-release-plugin.version>
-		<aspectj.version>1.8.2</aspectj.version>
-		<javax-servlet.version>3.0.1</javax-servlet.version>
-		<hibernate.version>5.2.17.Final</hibernate.version>
-		<c3p0.version>0.9.2.1</c3p0.version>
-		<ehcache.version>2.6.9</ehcache.version>
-		<slf4j.version>1.7.7</slf4j.version>
-		<slf4j-log4j12.version>1.7.7</slf4j-log4j12.version>
-		<maven-release-plugin.version>2.5.1</maven-release-plugin.version>
-		<maven-scm-provider-gitexe.version>1.9.2</maven-scm-provider-gitexe.version>
-		<project.scm.id>git</project.scm.id>
-		<jackson.version>2.9.6</jackson.version>
-		<javax.servlet.version>3.1.0</javax.servlet.version>
-		<javax.ws.version>2.1</javax.ws.version>
-		<jersey.version>2.27</jersey.version>
-		<gson.version>2.8.5</gson.version>
-		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
-		<springfox-swagger.version>2.9.2</springfox-swagger.version>
-		<opencsv.version>4.4</opencsv.version>
-		<!-- BiiT Dependencies -->
-		<biit-common-utils.version>[1.0,1.1)</biit-common-utils.version>
-		<rest-generic-client.version>[0.0,0.1)</rest-generic-client.version>
-		<user-manager-database.version>[0.0,0.1)</user-manager-database.version>
-		<form-result-pdf.version>[0.1,0.2)</form-result-pdf.version>
-		<form-result-xls.version>[0.0,0.1)</form-result-xls.version>
-	</properties>
 
 	<build>
 		<finalName>form-manager-server</finalName>
@@ -83,8 +49,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>8</source>
-					<target>8</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
