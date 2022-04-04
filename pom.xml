@@ -5,14 +5,14 @@
 	<groupId>com.biit</groupId>
 	<artifactId>form-manager-server</artifactId>
 	<packaging>pom</packaging>
-	<version>1.1.26-SNAPSHOT</version>
+	<version>1.1.26</version>
 	<name>Form Manager Server</name>
 
 	<parent>
 		<groupId>com.biit</groupId>
 		<artifactId>versions</artifactId>
 		<version>[0.1,0.2)</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<modules>
@@ -39,7 +39,7 @@
 	<scm>
 		<connection>scm:git:git.biit-solutions.com:BiiT/FormManagerServer.git</connection>
 		<developerConnection>scm:git:git.biit-solutions.com:BiiT/FormManagerServer.git</developerConnection>
-		<tag>FormManagerServer</tag>
+		<tag>form-manager-server-1.1.26</tag>
 	</scm>
 
 	<build>
