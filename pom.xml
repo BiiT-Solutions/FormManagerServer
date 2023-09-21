@@ -37,8 +37,8 @@
 	</distributionManagement>
 
 	<scm>
-		<connection>scm:git:git.biit-solutions.com:BiiT/FormManagerServer.git</connection>
-		<developerConnection>scm:git:git.biit-solutions.com:BiiT/FormManagerServer.git</developerConnection>
+		<connection>scm:git:git.biit-solutions.com:Java/FormManagerServer.git</connection>
+		<developerConnection>scm:git:git.biit-solutions.com:Java/FormManagerServer.git</developerConnection>
 		<tag>FormManagerServer</tag>
 	</scm>
 
