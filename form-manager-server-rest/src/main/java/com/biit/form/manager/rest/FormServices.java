@@ -1,32 +1,5 @@
 package com.biit.form.manager.rest;
 
-import com.biit.form.manager.repository.ICompanyUserRepository;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.biit.form.manager.configuration.FormManagerConfigurationReader;
 import com.biit.form.manager.controller.IFormController;
 import com.biit.form.manager.entity.CompanyUser;
@@ -35,6 +8,7 @@ import com.biit.form.manager.entity.UploadedFile;
 import com.biit.form.manager.form.PdfConverter;
 import com.biit.form.manager.form.XlsConverter;
 import com.biit.form.manager.logger.FormManagerLogger;
+import com.biit.form.manager.repository.ICompanyUserRepository;
 import com.biit.form.manager.repository.IFormDescriptionRepository;
 import com.biit.form.manager.repository.IUploadedFileRepository;
 import com.biit.form.manager.rest.exceptions.DatabaseException;
@@ -53,9 +27,34 @@ import com.biit.form.result.xls.exceptions.InvalidXlsElementException;
 import com.biit.logger.mail.SendEmail;
 import com.biit.logger.mail.exceptions.EmailNotSentException;
 import com.biit.logger.mail.exceptions.InvalidEmailAddressException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.lowagie.text.DocumentException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 public class FormServices {
@@ -84,9 +83,14 @@ public class FormServices {
             if (submittedForm == null) {
                 throw new InvalidFormException("Form not correctly submitted.");
             }
-            FormResult formResult = FormResult.fromJson(submittedForm.getJson());
-            if (formResult == null) {
-                throw new InvalidFormException("Form not found.");
+            FormResult formResult;
+            try {
+                formResult = FormResult.fromJson(submittedForm.getJson());
+                if (formResult == null) {
+                    throw new InvalidFormException("Form not found.");
+                }
+            } catch (JsonProcessingException e) {
+                throw new InvalidFormException("Invalid json.");
             }
 
             // Convert to PDF.
