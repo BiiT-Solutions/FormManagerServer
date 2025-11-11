@@ -1,5 +1,26 @@
 package com.biit.form.manager.folders;
 
+/*-
+ * #%L
+ * Form Manager Server (Core)
+ * %%
+ * Copyright (C) 2019 - 2025 BiiT Sourcing Solutions S.L.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * #L%
+ */
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -23,25 +44,25 @@ import com.biit.form.manager.entity.UploadedFile;
 @Test(groups = "fileManager")
 @Rollback(false)
 public class FileManagerTest extends AbstractTransactionalTestNGSpringContextTests {
-	private final static String[] FINAL_FOLDERS = { "01.DOC.PROMOTOR", "02.DOC.PROYECTO", "03.DOC.AVAL", "04.DOC.AMBIENTAL", "05.DOC.URBANISMO",
+	private static final String[] FINAL_FOLDERS = { "01.DOC.PROMOTOR", "02.DOC.PROYECTO", "03.DOC.AVAL", "04.DOC.AMBIENTAL", "05.DOC.URBANISMO",
 			"06.DOC.AUTORIZACIONES", "07.DOC.TERRENOS", "08.DOC.EVACUACIÓN" };
 
-	private final static String[] CATEGORY_LABELS = { "Promotor", "Proyecto", "Aval", "Ambiental", "Urbanismo", "Autorizaciones", "Terrenos", "Evacuación" };
+	private static final String[] CATEGORY_LABELS = { "Promotor", "Proyecto", "Aval", "Ambiental", "Urbanismo", "Autorizaciones", "Terrenos", "Evacuación" };
 
-	private final static String FILE_CONTENT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam dapibus, lorem et dignissim interdum, tortor leo fringilla erat, quis aliquam enim sapien id ligula. Etiam viverra condimentum orci suscipit malesuada. Cras sit amet nisl odio. Duis tellus ante, aliquam eu tellus non, tristique dignissim turpis. Aliquam sit amet commodo eros. Nullam molestie efficitur libero at malesuada. Suspendisse vel mattis est, non lacinia purus. Sed tincidunt commodo felis, eget condimentum risus porttitor sed. Cras risus velit, condimentum sit amet magna at, molestie dictum diam.";
-	private final static String USER_LOGIN = "oqueen";
-	private final static String USER_PASSWORD = "arrow";
-	private final static String USER_FIRSTNAME = "Oliver";
-	private final static String USER_LASTNAME = "Queen";
-	private final static String USER_EMAIL = "oqueen@starlingcity.com";
+	private static final String FILE_CONTENT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam dapibus, lorem et dignissim interdum, tortor leo fringilla erat, quis aliquam enim sapien id ligula. Etiam viverra condimentum orci suscipit malesuada. Cras sit amet nisl odio. Duis tellus ante, aliquam eu tellus non, tristique dignissim turpis. Aliquam sit amet commodo eros. Nullam molestie efficitur libero at malesuada. Suspendisse vel mattis est, non lacinia purus. Sed tincidunt commodo felis, eget condimentum risus porttitor sed. Cras risus velit, condimentum sit amet magna at, molestie dictum diam.";
+	private static final String USER_LOGIN = "oqueen";
+	private static final String USER_PASSWORD = "arrow";
+	private static final String USER_FIRSTNAME = "Oliver";
+	private static final String USER_LASTNAME = "Queen";
+	private static final String USER_EMAIL = "oqueen@starlingcity.com";
 
-	private final static String COMPANY = "Emin";
-	private final static String FOLDER = "Folder";
-	private final static String DOCUMENT = "12345";
+	private static final String COMPANY = "Emin";
+	private static final String FOLDER = "Folder";
+	private static final String DOCUMENT = "12345";
 
-	private final static String FORM_AS_JSON = "EminForm.json";
+	private static final String FORM_AS_JSON = "EminForm.json";
 
-	private final static String FILE_NAME = "file.txt";
+	private static final String FILE_NAME = "file.txt";
 
 	private CompanyUser companyUser;
 	private FormDescription formDescription;

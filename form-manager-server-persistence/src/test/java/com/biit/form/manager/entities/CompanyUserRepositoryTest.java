@@ -1,5 +1,26 @@
 package com.biit.form.manager.entities;
 
+/*-
+ * #%L
+ * Form Manager Server (Persistence)
+ * %%
+ * Copyright (C) 2019 - 2025 BiiT Sourcing Solutions S.L.
+ * %%
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * #L%
+ */
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +38,15 @@ import com.biit.usermanager.repository.IUserRepository;
 @Test(groups = "companyUserRepository")
 @Rollback(true)
 public class CompanyUserRepositoryTest extends AbstractTransactionalTestNGSpringContextTests {
-	private final static String USER_LOGIN = "oqueen";
-	private final static String USER_PASSWORD = "arrow";
-	private final static String USER_FIRSTNAME = "Oliver";
-	private final static String USER_LASTNAME = "Queen";
-	private final static String USER_EMAIL = "oqueen@starlingcity.com";
-	// private final static String USER_NEW_EMAIL = "oqueen@lianyu.com";
+	private static final String USER_LOGIN = "oqueen";
+	private static final String USER_PASSWORD = "arrow";
+	private static final String USER_FIRSTNAME = "Oliver";
+	private static final String USER_LASTNAME = "Queen";
+	private static final String USER_EMAIL = "oqueen@starlingcity.com";
+	// private static final String USER_NEW_EMAIL = "oqueen@lianyu.com";
 
-	private final static String COMPANY = "Emin";
-	private final static String FOLDER = "Folder";
+	private static final String COMPANY = "Emin";
+	private static final String FOLDER = "Folder";
 
 	@Autowired
 	private IUserRepository userRepository;
